@@ -33,6 +33,7 @@
       },
       visible: {},      // id -> boolean（未設定なら既定値）
       order: [],        // 表示順（id の配列）
+      orderMoved: [],   // ユーザーが ↑↓ で動かした id（これ以外の既定項目は tasks.js の並びに揃える）
       overrides: {},    // 既定項目の上書き id -> {name, category, count, note, days}
       customTasks: [],  // ユーザー追加項目
       progress: {
@@ -76,6 +77,9 @@
     }
     if (Array.isArray(src.order)) {
       s.order = src.order.filter(function (id) { return typeof id === "string"; });
+    }
+    if (Array.isArray(src.orderMoved)) {
+      s.orderMoved = src.orderMoved.filter(function (id) { return typeof id === "string"; });
     }
     if (src.overrides && typeof src.overrides === "object") {
       Object.keys(src.overrides).forEach(function (id) {
@@ -310,6 +314,10 @@
   }
 
   // order 配列を実在する id で正規化し、新規項目は同種別の末尾へ入れる
+  // order 配列を実在する id で正規化する。
+  //  - 独自項目や新規項目は、まず同種別の末尾に入れる
+  //  - そのうえで「ユーザーが動かしていない既定項目」同士の並びを tasks.js の順に揃える
+  //    （動かした項目と独自項目は今の位置のまま）。後から追加された既定項目が末尾に取り残されない
   function syncOrder() {
     var tasks = allTasks();
     var exists = {};
@@ -326,6 +334,23 @@
       if (lastIdx < 0) order.push(t.id);
       else order.splice(lastIdx + 1, 0, t.id);
       inOrder[t.id] = 1;
+    });
+
+    var moved = {};
+    state.orderMoved = state.orderMoved.filter(function (id) { return exists[id]; });
+    state.orderMoved.forEach(function (id) { moved[id] = 1; });
+    var defIndex = {};
+    DEFAULTS.forEach(function (d, i) { defIndex[d.id] = i; });
+    ["daily", "weekly"].forEach(function (type) {
+      // 動かしていない既定項目が占めている位置（スロット）を集め、tasks.js の順で詰め直す
+      var slots = [];
+      for (var i = 0; i < order.length; i++) {
+        var t = exists[order[i]];
+        if (t.type === type && t.builtin && !moved[t.id]) slots.push(i);
+      }
+      var ids = slots.map(function (i) { return order[i]; })
+        .sort(function (x, y) { return defIndex[x] - defIndex[y]; });
+      slots.forEach(function (pos, k) { order[pos] = ids[k]; });
     });
     state.order = order;
   }
@@ -584,6 +609,7 @@
     if (a < 0 || b < 0) return;
     state.order[a] = sameType[j];
     state.order[b] = sameType[i];
+    if (state.orderMoved.indexOf(id) < 0) state.orderMoved.push(id); // 動かした項目は位置を固定する
     saveState();
   }
 
@@ -626,6 +652,7 @@
     } else if (act === "del") {
       if (!confirm("「" + t.name + "」を削除しますか？")) return;
       state.customTasks = state.customTasks.filter(function (c) { return c.id !== id; });
+      state.orderMoved = state.orderMoved.filter(function (x) { return x !== id; });
       delete state.visible[id];
       delete state.progress.daily.done[id];
       delete state.progress.weekly.done[id];
