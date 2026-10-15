@@ -10,7 +10,23 @@ css/style.css   スタイル（Catppuccin 4 フレーバー、ライト / ダー
 js/tasks.js     既定のタスク一覧（ここを編集すると全員の既定項目が変わる）
 js/app.js       アプリ本体（依存ライブラリなし）
 .nojekyll       Jekyll 変換を止める空ファイル（消さない）
+assets/         アイコン（icon.svg と PNG 各サイズ）、OGP 画像（og-image.png）とその生成元 og-image.html
+robots.txt / sitemap.xml / manifest.webmanifest   検索エンジンとホーム画面追加用
 ```
+
+## アナリティクス（Google Analytics 4）
+
+`index.html` の head にある `window.GA_MEASUREMENT_ID = ""` に測定 ID（`G-XXXXXXXXXX`）を入れると gtag.js を読み込みます。空のとき、`file://` で開いたとき、`localhost` / `127.0.0.1` のときは何も読み込みません。
+
+## OGP 画像の作り直し
+
+`assets/og-image.html` を 1200×630 でスクリーンショットすると `assets/og-image.png` になります。例:
+
+```
+chrome --headless=new --window-size=1200,630 --screenshot=assets/og-image.png assets/og-image.html
+```
+
+アイコンは `assets/icon.svg` が元で、PNG（192 / 512 / apple-touch-icon 180）は同じ要領で各サイズに描画したものです。
 
 ## 既定タスク（`js/tasks.js`）
 

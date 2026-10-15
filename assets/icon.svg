@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- マビモバ 日課・週課リスト のアイコン: Catppuccin Mocha の Base に Mauve の角丸、チェックマークは Base -->
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="#1e1e2e"/>
+  <rect x="11" y="11" width="42" height="42" rx="10" fill="#cba6f7"/>
+  <path d="M20 33 L29 42 L45 24" fill="none" stroke="#1e1e2e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

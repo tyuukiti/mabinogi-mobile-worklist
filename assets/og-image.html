@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<style>
+  /* OGP 画像 1200x630。Catppuccin Mocha */
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    font-family: "Segoe UI", "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+    position: relative;
+  }
+  .bar { position: absolute; top: 0; left: 0; right: 0; height: 10px; background: linear-gradient(90deg, #fab387, #89b4fa, #cba6f7); }
+  .wrap { position: absolute; left: 72px; top: 70px; right: 72px; bottom: 60px; display: flex; gap: 48px; align-items: center; }
+  .text { flex: 1 1 auto; }
+  .brand { display: flex; align-items: center; gap: 18px; margin-bottom: 26px; }
+  .brand .mark { width: 56px; height: 56px; border-radius: 14px; background: #cba6f7; position: relative; }
+  .brand .mark::after { content: ""; position: absolute; left: 14px; top: 16px; width: 20px; height: 11px; border-left: 6px solid #1e1e2e; border-bottom: 6px solid #1e1e2e; transform: rotate(-45deg); border-radius: 2px; }
+  .brand .name { font-size: 30px; font-weight: 700; color: #a6adc8; letter-spacing: 0.02em; }
+  h1 { margin: 0 0 22px; font-size: 64px; line-height: 1.18; font-weight: 800; color: #cdd6f4; }
+  h1 em { font-style: normal; color: #cba6f7; }
+  p { margin: 0; font-size: 26px; line-height: 1.55; color: #a6adc8; }
+  .tags { margin-top: 30px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .tag { font-size: 22px; font-weight: 700; padding: 8px 18px; border-radius: 999px; background: #313244; color: #cdd6f4; }
+  .tag.d { color: #fab387; } .tag.w { color: #cba6f7; } .tag.b { color: #b4befe; }
+  .cards { flex: 0 0 380px; display: flex; flex-direction: column; gap: 14px; }
+  .card { background: #313244; border-radius: 16px; border-left: 8px solid var(--c); padding: 18px 20px; display: flex; align-items: center; gap: 16px; }
+  .card .chk { width: 34px; height: 34px; border-radius: 10px; border: 3px solid #6c7086; flex: 0 0 auto; }
+  .card.done .chk { background: var(--c); border-color: var(--c); position: relative; }
+  .card.done .chk::after { content: ""; position: absolute; left: 9px; top: 6px; width: 10px; height: 16px; border-right: 4px solid #1e1e2e; border-bottom: 4px solid #1e1e2e; transform: rotate(45deg); }
+  .card .t { font-size: 24px; font-weight: 700; }
+  .card .s { font-size: 17px; color: #a6adc8; margin-top: 2px; }
+  .card.done .t { text-decoration: line-through; color: #a6adc8; }
+  .url { position: absolute; right: 72px; bottom: 44px; font-size: 24px; color: #6c7086; font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="bar"></div>
+  <div class="wrap">
+    <div class="text">
+      <div class="brand"><div class="mark"></div><div class="name">マビモバ 日課・週課リスト</div></div>
+      <h1>マビノギモバイルの<br><em>デイリー・ウィークリー</em>を<br>チェックするリスト</h1>
+      <p>毎日 6:00 ／ 月曜 6:00 に自動リセット。<br>物々交換 82 件と曜日ダンジョンを収録。<br>ログイン不要、データはブラウザに保存。</p>
+      <div class="tags"><span class="tag d">デイリー</span><span class="tag w">ウィークリー</span><span class="tag b">物々交換</span><span class="tag">曜日ダンジョン</span></div>
+    </div>
+    <div class="cards">
+      <div class="card done" style="--c:#89dceb"><div class="chk"></div><div><div class="t">チェックインボード</div><div class="s">ログインで進行</div></div></div>
+      <div class="card done" style="--c:#cba6f7"><div class="chk"></div><div><div class="t">デイリーミッション</div><div class="s">冒険者ポイントで宝箱</div></div></div>
+      <div class="card" style="--c:#f38ba8"><div class="chk"></div><div><div class="t">黒穴の浄化</div><div class="s">週 12 回までストック可</div></div></div>
+      <div class="card" style="--c:#b4befe"><div class="chk"></div><div><div class="t">ネリス</div><div class="s">合金インゴット×2 → 特殊インゴット×1</div></div></div>
+    </div>
+  </div>
+  <div class="url">mabimobaworklist.tyuukiti.com</div>
+</body>
+</html>

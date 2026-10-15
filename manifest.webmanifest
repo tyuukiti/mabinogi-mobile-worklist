@@ -1,0 +1,16 @@
+{
+  "name": "マビモバ 日課・週課リスト",
+  "short_name": "マビモバ日課",
+  "description": "デイリー・ウィークリーを毎日 6:00／月曜 6:00 に自動リセット。物々交換 82 件を収録。ログイン不要、データはブラウザ保存。",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "lang": "ja",
+  "background_color": "#1e1e2e",
+  "theme_color": "#1e1e2e",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
