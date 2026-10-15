@@ -413,22 +413,6 @@
     $("daily-countdown").textContent = fmtRemain(nd - now);
     $("weekly-next").textContent = fmtDateTime(nw);
     $("weekly-countdown").textContent = fmtRemain(nw - now);
-    $("sum-daily-reset").textContent = "リセットまで " + fmtRemain(nd - now).replace("あと ", "");
-    $("sum-weekly-reset").textContent = "リセットまで " + fmtRemain(nw - now).replace("あと ", "");
-  }
-
-  // 画面上部の進捗サマリー（達成数 / 総数、達成率、残り件数）
-  function renderSummary(type, doneN, total) {
-    $("sum-" + type + "-done").textContent = doneN;
-    $("sum-" + type + "-total").textContent = total;
-    $("sum-" + type + "-pct").textContent = total ? Math.round(doneN / total * 100) + "%" : "";
-    $("sum-" + type + "-fill").style.width = total ? Math.round(doneN / total * 100) + "%" : "0%";
-    var rest = $("sum-" + type + "-rest");
-    if (!total) rest.textContent = "表示項目がありません";
-    else if (doneN >= total) rest.textContent = "すべて完了";
-    else rest.textContent = "残り " + (total - doneN) + " 件";
-    var stat = rest.closest(".stat");
-    if (stat) stat.classList.toggle("complete", total > 0 && doneN >= total);
   }
 
   // byDay を持つ項目は、デイリー期間の曜日に応じた name / sub / note を返す
@@ -501,7 +485,6 @@
     $(type + "-progress-text").textContent = doneN + " / " + total;
     var fill = $(type + "-progress-fill");
     fill.style.width = total ? Math.round(doneN / total * 100) + "%" : "0%";
-    renderSummary(type, doneN, total);
     fill.classList.toggle("complete", total > 0 && doneN === total);
   }
 
