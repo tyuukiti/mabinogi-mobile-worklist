@@ -4,6 +4,7 @@
 
   var STORAGE_KEY = "mabimoba_worklist_v1";
   var DAY_NAMES = ["日", "月", "火", "水", "木", "金", "土"];
+  var PALETTES = ["erinn", "midnight", "sunset"];
   var DEFAULTS = Array.isArray(window.DEFAULT_TASKS) ? window.DEFAULT_TASKS : [];
 
   // ------------------------------------------------------------
@@ -28,7 +29,8 @@
         weeklyResetDay: 1,
         weeklyResetHour: 6,
         hideCompleted: false,
-        theme: "auto"
+        theme: "auto",
+        palette: "erinn"
       },
       visible: {},      // id -> boolean（未設定なら既定値）
       order: [],        // 表示順（id の配列）
@@ -67,6 +69,7 @@
       if (isInt(st.weeklyResetHour, 0, 23)) s.settings.weeklyResetHour = st.weeklyResetHour;
       s.settings.hideCompleted = !!st.hideCompleted;
       if (st.theme === "light" || st.theme === "dark") s.settings.theme = st.theme;
+      if (PALETTES.indexOf(st.palette) >= 0) s.settings.palette = st.palette;
     }
     if (src.visible && typeof src.visible === "object") {
       Object.keys(src.visible).forEach(function (id) { s.visible[id] = !!src.visible[id]; });
@@ -171,6 +174,20 @@
   function fmtDays(days) {
     return days.slice().sort(function (a, b) { return ((a + 6) % 7) - ((b + 6) % 7); })
       .map(function (d) { return DAY_NAMES[d]; }).join("・");
+  }
+
+  // カテゴリ名 → 色スラッグ。未知のカテゴリは名前のハッシュで 6 色から固定で割り当てる
+  var CAT_SLUGS = {
+    "ログイン": "login", "ミッション": "mission", "ギルド": "guild", "ショップ": "shop", "戦闘": "battle",
+    "クエスト": "quest", "リソース": "resource", "生活": "life", "その他": "other"
+  };
+  var EXTRA_SLUGS = ["x1", "x2", "x3", "x4", "x5", "x6"];
+  function catSlug(name) {
+    name = String(name || "");
+    if (CAT_SLUGS[name]) return CAT_SLUGS[name];
+    var h = 0;
+    for (var i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+    return EXTRA_SLUGS[h % EXTRA_SLUGS.length];
   }
 
   var toastTimer = null;
@@ -379,11 +396,11 @@
       rows.forEach(function (it) {
         var t = it.t;
         if (t.category !== lastCat) {
-          html += '<div class="group-title">' + esc(t.category) + "</div>";
+          html += '<div class="group-title" data-cat="' + catSlug(t.category) + '"><span class="cat-dot"></span>' + esc(t.category) + "</div>";
           lastCat = t.category;
         }
         var cls = "task" + (it.complete ? " done" : (it.n > 0 ? " partial" : ""));
-        html += '<div class="' + cls + '" data-id="' + esc(t.id) + '" role="button" tabindex="0" aria-pressed="' + (it.complete ? "true" : "false") + '">';
+        html += '<div class="' + cls + '" data-id="' + esc(t.id) + '" data-cat="' + catSlug(t.category) + '" role="button" tabindex="0" aria-pressed="' + (it.complete ? "true" : "false") + '">';
         html += '<span class="task-check" aria-hidden="true">' + (it.complete ? "✓" : "") + "</span>";
         html += '<div class="task-body"><div class="task-name">' + esc(t.name);
         if (t.days && t.days.length) html += '<span class="chip muted">' + fmtDays(t.days) + "</span>";
@@ -475,10 +492,10 @@
       var pos = tasks.indexOf(t);
       var vis = isVisible(t);
       if (!q && t.category !== lastCat) {
-        html += '<div class="c-group">' + esc(t.category) + "</div>";
+        html += '<div class="c-group" data-cat="' + catSlug(t.category) + '"><span class="cat-dot"></span>' + esc(t.category) + "</div>";
         lastCat = t.category;
       }
-      html += '<div class="c-row' + (vis ? "" : " hidden-task") + '" data-id="' + esc(t.id) + '">';
+      html += '<div class="c-row' + (vis ? "" : " hidden-task") + '" data-id="' + esc(t.id) + '" data-cat="' + catSlug(t.category) + '">';
       html += '<input type="checkbox" data-act="vis" ' + (vis ? "checked" : "") + ' aria-label="表示する">';
       html += '<div class="c-body"><div class="c-name">' + esc(t.name);
       if (t.count > 1) html += '<span class="chip">' + t.count + " 回</span>";
@@ -671,6 +688,7 @@
     $("set-weekly-day").value = state.settings.weeklyResetDay;
     $("set-weekly-hour").value = state.settings.weeklyResetHour;
     $("set-theme").value = state.settings.theme;
+    $("set-palette").value = state.settings.palette;
     renderDebug();
     $("dlg-settings").showModal();
   }
@@ -685,6 +703,7 @@
     state.settings.weeklyResetDay = Number($("set-weekly-day").value);
     state.settings.weeklyResetHour = Number($("set-weekly-hour").value);
     state.settings.theme = $("set-theme").value;
+    state.settings.palette = $("set-palette").value;
     applyTheme();
     // リセット時刻を変えると期間キーも変わるので、現在の進捗を新しい期間に引き継ぐ
     state.progress.daily.period = dailyPeriodKey(new Date());
@@ -697,6 +716,8 @@
     var th = state.settings.theme;
     if (th === "light" || th === "dark") document.documentElement.setAttribute("data-theme", th);
     else document.documentElement.removeAttribute("data-theme");
+    var pal = PALETTES.indexOf(state.settings.palette) >= 0 ? state.settings.palette : PALETTES[0];
+    document.documentElement.setAttribute("data-palette", pal);
   }
 
   function exportData() {
@@ -801,7 +822,7 @@
     });
 
     // 設定
-    ["set-daily-hour", "set-weekly-day", "set-weekly-hour", "set-theme"].forEach(function (id) {
+    ["set-daily-hour", "set-weekly-day", "set-weekly-hour", "set-theme", "set-palette"].forEach(function (id) {
       $(id).addEventListener("change", onSettingsChange);
     });
     $("btn-export").addEventListener("click", exportData);
