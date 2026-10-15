@@ -19,7 +19,7 @@
 | 完了を隠す | フッターのチェックで完了済み項目を折りたたむ |
 | エクスポート / インポート | 設定・表示項目・独自項目・進捗を JSON で書き出し / 読み込み。別ブラウザや別端末へ移すときに使う |
 | リセット時刻の変更 | 「設定」からデイリー時刻・ウィークリー曜日 / 時刻を変更可能 |
-| テーマ | OS 設定に追従 / ライト / ダーク。カラーパレットは「エリン」「ミッドナイト」「サンセット」の 3 種類。カテゴリごとに固定色（戦闘=赤、生活=緑 など）、デイリー / ウィークリーはパレットごとのアクセント色で区別 |
+| 配色 | [Catppuccin](https://catppuccin.com) の 4 フレーバー（Latte / Frappé / Macchiato / Mocha）から選択。既定は OS 設定に追従（ライト = Latte、ダーク = Mocha）。デイリー = Peach、ウィークリー = Mauve、カテゴリごとに固定色（戦闘 = Red、生活 = Green など） |
 
 ## リセットの判定方法
 
@@ -63,6 +63,16 @@ localStorage のキー `mabimoba_worklist_v1` に 1 つの JSON として保存�
                    "weekly": { "period": "2026-10-12", "done": { "<タスクid>": 3 } } }
 }
 ```
+
+## 配色のカスタマイズ
+
+色はすべて `css/style.css` 先頭の CSS 変数で定義しています。
+
+- `--ctp-*`: Catppuccin 公式 [palette.json](https://github.com/catppuccin/palette) の値（フレーバーごと）
+- `--bg` / `--panel` / `--card` / `--border` など: 背景・パネル・カードの役割色（ライト用とダーク用の 2 セット）
+- `--daily` / `--weekly` / `--primary` / `--cat-*`: アクセントとカテゴリ色。別の Catppuccin 色にしたいときはここだけ書き換える
+
+Catppuccin は MIT License です。
 
 ## 既定タスクの出典
 

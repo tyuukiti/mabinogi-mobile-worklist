@@ -4,7 +4,7 @@
 
   var STORAGE_KEY = "mabimoba_worklist_v1";
   var DAY_NAMES = ["日", "月", "火", "水", "木", "金", "土"];
-  var PALETTES = ["erinn", "midnight", "sunset"];
+  var FLAVORS = ["auto", "latte", "frappe", "macchiato", "mocha"]; // Catppuccin
   var DEFAULTS = Array.isArray(window.DEFAULT_TASKS) ? window.DEFAULT_TASKS : [];
 
   // ------------------------------------------------------------
@@ -29,8 +29,7 @@
         weeklyResetDay: 1,
         weeklyResetHour: 6,
         hideCompleted: false,
-        theme: "auto",
-        palette: "erinn"
+        flavor: "auto"
       },
       visible: {},      // id -> boolean（未設定なら既定値）
       order: [],        // 表示順（id の配列）
@@ -68,8 +67,9 @@
       if (isInt(st.weeklyResetDay, 0, 6)) s.settings.weeklyResetDay = st.weeklyResetDay;
       if (isInt(st.weeklyResetHour, 0, 23)) s.settings.weeklyResetHour = st.weeklyResetHour;
       s.settings.hideCompleted = !!st.hideCompleted;
-      if (st.theme === "light" || st.theme === "dark") s.settings.theme = st.theme;
-      if (PALETTES.indexOf(st.palette) >= 0) s.settings.palette = st.palette;
+      if (FLAVORS.indexOf(st.flavor) >= 0) s.settings.flavor = st.flavor;
+      else if (st.theme === "light") s.settings.flavor = "latte"; // 旧設定からの移行
+      else if (st.theme === "dark") s.settings.flavor = "mocha";
     }
     if (src.visible && typeof src.visible === "object") {
       Object.keys(src.visible).forEach(function (id) { s.visible[id] = !!src.visible[id]; });
@@ -687,8 +687,7 @@
     $("set-daily-hour").value = state.settings.dailyResetHour;
     $("set-weekly-day").value = state.settings.weeklyResetDay;
     $("set-weekly-hour").value = state.settings.weeklyResetHour;
-    $("set-theme").value = state.settings.theme;
-    $("set-palette").value = state.settings.palette;
+    $("set-flavor").value = state.settings.flavor;
     renderDebug();
     $("dlg-settings").showModal();
   }
@@ -702,8 +701,7 @@
     state.settings.dailyResetHour = Number($("set-daily-hour").value);
     state.settings.weeklyResetDay = Number($("set-weekly-day").value);
     state.settings.weeklyResetHour = Number($("set-weekly-hour").value);
-    state.settings.theme = $("set-theme").value;
-    state.settings.palette = $("set-palette").value;
+    state.settings.flavor = $("set-flavor").value;
     applyTheme();
     // リセット時刻を変えると期間キーも変わるので、現在の進捗を新しい期間に引き継ぐ
     state.progress.daily.period = dailyPeriodKey(new Date());
@@ -713,11 +711,8 @@
     render();
   }
   function applyTheme() {
-    var th = state.settings.theme;
-    if (th === "light" || th === "dark") document.documentElement.setAttribute("data-theme", th);
-    else document.documentElement.removeAttribute("data-theme");
-    var pal = PALETTES.indexOf(state.settings.palette) >= 0 ? state.settings.palette : PALETTES[0];
-    document.documentElement.setAttribute("data-palette", pal);
+    var fl = FLAVORS.indexOf(state.settings.flavor) >= 0 ? state.settings.flavor : "auto";
+    document.documentElement.setAttribute("data-flavor", fl);
   }
 
   function exportData() {
@@ -822,7 +817,7 @@
     });
 
     // 設定
-    ["set-daily-hour", "set-weekly-day", "set-weekly-hour", "set-theme", "set-palette"].forEach(function (id) {
+    ["set-daily-hour", "set-weekly-day", "set-weekly-hour", "set-flavor"].forEach(function (id) {
       $(id).addEventListener("change", onSettingsChange);
     });
     $("btn-export").addEventListener("click", exportData);

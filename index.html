@@ -1,9 +1,23 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" data-flavor="auto">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
+  <!-- 保存済みのフレーバーを CSS 読み込み前に反映して、ダーク設定時のちらつきを防ぐ -->
+  <script data-flavor-init>
+    (function () {
+      try {
+        var s = JSON.parse(localStorage.getItem("mabimoba_worklist_v1") || "{}");
+        var st = s && s.settings ? s.settings : {};
+        var f = st.flavor;
+        if (["auto", "latte", "frappe", "macchiato", "mocha"].indexOf(f) < 0) {
+          f = st.theme === "light" ? "latte" : st.theme === "dark" ? "mocha" : "auto";
+        }
+        document.documentElement.setAttribute("data-flavor", f);
+      } catch (e) { /* 保存データが読めなければ auto のまま */ }
+    })();
+  </script>
   <title>マビモバ 日課・週課リスト</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -161,21 +175,16 @@
 
       <h3>表示</h3>
       <label class="field">
-        <span>テーマ</span>
-        <select id="set-theme">
-          <option value="auto">OS の設定に合わせる</option>
-          <option value="light">ライト</option>
-          <option value="dark">ダーク</option>
+        <span>フレーバー（配色）</span>
+        <select id="set-flavor">
+          <option value="auto">OS の設定に合わせる（ライト: Latte / ダーク: Mocha）</option>
+          <option value="latte">Latte（ライト）</option>
+          <option value="frappe">Frappé（ダーク・やわらかめ）</option>
+          <option value="macchiato">Macchiato（ダーク・中間）</option>
+          <option value="mocha">Mocha（ダーク・いちばん暗い）</option>
         </select>
       </label>
-      <label class="field">
-        <span>カラーパレット</span>
-        <select id="set-palette">
-          <option value="erinn">エリン（グリーン × アンバー × インディゴ）</option>
-          <option value="midnight">ミッドナイト（インディゴ × スカイ × パープル）</option>
-          <option value="sunset">サンセット（コーラル × アンバー × ティール）</option>
-        </select>
-      </label>
+      <p class="hint">配色は <a href="https://catppuccin.com" target="_blank" rel="noopener">Catppuccin</a> を使用しています。</p>
 
       <h3>データ</h3>
       <div class="btn-row">
