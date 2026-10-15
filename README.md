@@ -22,13 +22,12 @@
 
 ## 注意
 
-- 項目の回数や素材名は公式ガイドと攻略記事（2026 年 10 月時点）を基にしています。ゲームのアップデートで変わることがあるので、実際の表示と違う場合はゲーム内を優先し、「表示項目」→「編集」で直してください。
+- 項目の回数や素材名はゲームのアップデートで変わることがあります。ゲームのアップデートで変わることがあるので、実際の表示と違う場合はゲーム内を優先し、「表示項目」→「編集」で直してください。
 - リセットの判定は端末のローカル時刻で行います。
 
 ## クレジット
 
 - 配色: [Catppuccin](https://github.com/catppuccin/palette)（MIT License）
 - UI 部品: [Uiverse.io](https://uiverse.io)（MIT License）の iZOXVL [wise-goat-75](https://uiverse.io/iZOXVL/wise-goat-75)、kyle1dev [afraid-wasp-94](https://uiverse.io/kyle1dev/afraid-wasp-94)、TimTrayler [quiet-swan-35](https://uiverse.io/TimTrayler/quiet-swan-35) を基に、色を差し替えて使用
-- 項目の出典: マビノギモバイル公式ガイド「日次/週次コンテンツのリセットタイミング」、GameWith、Gamerch、ゲーム先取り、ゆるっとゲーミング、はまっちゲームズ などの攻略記事
 
 開発者向けの情報（ファイル構成、既定タスクの編集方法、保存データの形式）は [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) にあります。
