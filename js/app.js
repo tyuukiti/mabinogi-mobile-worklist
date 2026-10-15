@@ -415,8 +415,21 @@
     $("weekly-countdown").textContent = fmtRemain(nw - now);
   }
 
+  // byDay を持つ項目は、デイリー期間の曜日に応じた name / sub / note を返す
+  function dayVariant(t, dow) {
+    var v = t.byDay && t.byDay[dow];
+    if (!v) return t;
+    var m = {};
+    Object.keys(t).forEach(function (k) { m[k] = t[k]; });
+    if (v.name) m.name = v.name;
+    if (v.sub !== undefined) m.sub = v.sub;
+    if (v.note !== undefined) m.note = v.note;
+    return m;
+  }
+
   function renderList(type) {
-    var tasks = tasksForView(type);
+    var dow = dailyPeriodDate(new Date()).getDay();
+    var tasks = tasksForView(type).map(function (t) { return type === "daily" ? dayVariant(t, dow) : t; });
     var container = $(type + "-list");
     var total = tasks.length;
     var doneN = 0;
@@ -559,6 +572,7 @@
 
   function renderCustomize() {
     var q = $("customize-search").value.trim().toLowerCase();
+    var dow = dailyPeriodDate(new Date()).getDay();
     var tasks = allTasks().filter(function (t) { return t.type === customizeTab; });
     var filtered = tasks.filter(function (t) { return matchesQuery(t, q); });
     var html = "";
@@ -582,7 +596,10 @@
       if (t.count > 1) html += '<span class="chip">' + t.count + " 回</span>";
       if (!t.builtin) html += '<span class="chip muted">独自</span>';
       else if (t.overridden) html += '<span class="chip muted">編集済</span>';
-      if (t.days && t.days.length) html += '<span class="chip muted">' + fmtDays(t.days) + "</span>";
+      if (t.days && t.days.length) {
+        html += '<span class="chip muted">' + fmtDays(t.days) + "</span>";
+        if (t.type === "daily" && t.days.indexOf(dow) < 0) html += '<span class="chip muted">今日は対象外</span>';
+      }
       html += "</div>";
       if (t.sub) html += '<div class="c-sub">' + fmtSub(t.sub) + "</div>";
       if (t.note) html += '<div class="c-note">' + esc(t.note) + "</div>";

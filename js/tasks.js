@@ -11,6 +11,7 @@
  *   note     : 3 行目（任意。物々交換では渡す素材の入手方法）
  *   count    : 1 周期あたりの回数（省略時は 1 = チェックボックス）
  *   days     : 表示する曜日の配列（0=日 1=月 ... 6=土）。省略時は毎日
+ *   byDay    : 曜日ごとの表示差し替え { 曜日: { name, sub, note } }（既定項目専用）
  *   default  : true なら初期状態で表示 ON
  *
  * 出典: 公式ガイド「日次/週次コンテンツのリセットタイミング」、各攻略サイト（2026-10 時点）
@@ -30,11 +31,19 @@ window.DEFAULT_TASKS = [
   { id: "d_shop_free",       type: "daily",  category: "ショップ",  name: "ショップの無料アイテム受け取り", note: "衣装アイテム・染色アンプル等を各 1 つ", default: true },
   { id: "d_shop_gem_box",    type: "daily",  category: "ショップ",  name: "砕けた宝石ボックス購入（ゴールド）", count: 10, note: "1 日 10 個まで", default: false },
   { id: "d_black_hole",      type: "daily",  category: "戦闘",      name: "黒穴の浄化",                    note: "6:00 に利用状況更新。未消化分は週 12 回までストック可", default: true },
-  // 曜日ダンジョン: 曜日アルバイトに志願して 1 日 1 回。月木=洞窟 / 火金=邸宅 / 水土=遺跡 / 日=いずれか 1 つを選択
-  { id: "d_shining_cave",    type: "daily",  category: "戦闘",      name: "曜日ダンジョン: 輝く洞窟",  sub: "ゴールド（黄金インゴット）",  note: "曜日アルバイトに志願して入場。難易度 I/II/III は Lv.32/45/58", days: [1, 4], default: true },
-  { id: "d_wd_mansion",      type: "daily",  category: "戦闘",      name: "曜日ダンジョン: 眩い邸宅",  sub: "宝石",                      note: "曜日アルバイトに志願して入場。難易度 I/II/III は Lv.32/45/58", days: [2, 5], default: true },
-  { id: "d_wd_ruins",        type: "daily",  category: "戦闘",      name: "曜日ダンジョン: 煌めく遺跡", sub: "錬金術再燃触媒",            note: "曜日アルバイトに志願して入場。難易度 I/II/III は Lv.45/55/65", days: [3, 6], default: true },
-  { id: "d_wd_sunday",       type: "daily",  category: "戦闘",      name: "曜日ダンジョン（日曜は 1 つ選択）", sub: "洞窟 / 邸宅 / 遺跡から 1 つ", note: "曜日アルバイトに志願して入場。選んだダンジョンの解放条件に従う", days: [0], default: true },
+  // 曜日ダンジョン: 1 項目で、曜日（デイリー期間の曜日）によって表示する内容が切り替わる（byDay）
+  { id: "d_weekday_dungeon", type: "daily", category: "戦闘", name: "曜日ダンジョン",
+    sub: "月木: 輝く洞窟 ／ 火金: 眩い邸宅 ／ 水土: 煌めく遺跡 ／ 日: 1 つ選択",
+    note: "曜日アルバイトに志願して入場。1 日 1 回",
+    byDay: {
+      1: { name: "曜日ダンジョン: 輝く洞窟",  sub: "ゴールド（黄金インゴット）", note: "曜日アルバイトに志願して入場。難易度 I/II/III は Lv.32/45/58" },
+      4: { name: "曜日ダンジョン: 輝く洞窟",  sub: "ゴールド（黄金インゴット）", note: "曜日アルバイトに志願して入場。難易度 I/II/III は Lv.32/45/58" },
+      2: { name: "曜日ダンジョン: 眩い邸宅",  sub: "宝石",                      note: "曜日アルバイトに志願して入場。難易度 I/II/III は Lv.32/45/58" },
+      5: { name: "曜日ダンジョン: 眩い邸宅",  sub: "宝石",                      note: "曜日アルバイトに志願して入場。難易度 I/II/III は Lv.32/45/58" },
+      3: { name: "曜日ダンジョン: 煌めく遺跡", sub: "錬金術再燃触媒",            note: "曜日アルバイトに志願して入場。難易度 I/II/III は Lv.45/55/65" },
+      6: { name: "曜日ダンジョン: 煌めく遺跡", sub: "錬金術再燃触媒",            note: "曜日アルバイトに志願して入場。難易度 I/II/III は Lv.45/55/65" },
+      0: { name: "曜日ダンジョン（日曜は 1 つ選択）", sub: "洞窟 / 邸宅 / 遺跡から 1 つ", note: "曜日アルバイトに志願して入場。選んだダンジョンの解放条件に従う" }
+    }, default: true },
   { id: "d_deep_dungeon",    type: "daily",  category: "戦闘",      name: "デイリークエスト（深部ダンジョン）", note: "1 日 1 回。精霊の翼・不死の粉", default: true },
   { id: "d_repeat_quest",    type: "daily",  category: "クエスト",  name: "デイリー反復クエスト（法皇庁からの特別な依頼）", note: "「深部に向かって」クリア後に解放", default: true },
   { id: "d_npc_quest",       type: "daily",  category: "クエスト",  name: "NPC デイリークエスト（地域評判）", note: "地域限定アイテムの購入権が開放されることも", default: false },
