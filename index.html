@@ -39,28 +39,30 @@
   <main class="columns">
     <section class="column" data-type="daily">
       <div class="column-head">
-        <div class="head-title">
-          <h2>デイリー<button type="button" class="gear" data-customize="daily" aria-label="デイリーの表示項目を設定" title="表示項目"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M20.11 9.83 L22.83 10.09 A11.0 11.0 0 0 1 22.83 13.91 L20.11 14.17 A8.4 8.4 0 0 1 19.27 16.2 L19.27 16.2 L21.01 18.31 A11.0 11.0 0 0 1 18.31 21.01 L16.2 19.27 A8.4 8.4 0 0 1 14.17 20.11 L14.17 20.11 L13.91 22.83 A11.0 11.0 0 0 1 10.09 22.83 L9.83 20.11 A8.4 8.4 0 0 1 7.8 19.27 L7.8 19.27 L5.69 21.01 A11.0 11.0 0 0 1 2.99 18.31 L4.73 16.2 A8.4 8.4 0 0 1 3.89 14.17 L3.89 14.17 L1.17 13.91 A11.0 11.0 0 0 1 1.17 10.09 L3.89 9.83 A8.4 8.4 0 0 1 4.73 7.8 L4.73 7.8 L2.99 5.69 A11.0 11.0 0 0 1 5.69 2.99 L7.8 4.73 A8.4 8.4 0 0 1 9.83 3.89 L9.83 3.89 L10.09 1.17 A11.0 11.0 0 0 1 13.91 1.17 L14.17 3.89 A8.4 8.4 0 0 1 16.2 4.73 L16.2 4.73 L18.31 2.99 A11.0 11.0 0 0 1 21.01 5.69 L19.27 7.8 A8.4 8.4 0 0 1 20.11 9.83 Z M15.6 12.0 A3.6 3.6 0 1 0 8.4 12.0 A3.6 3.6 0 1 0 15.6 12.0 Z"></path></svg></button></h2>
+        <div>
+          <h2>デイリー</h2>
           <p class="reset-info">次のリセット: <span id="daily-next"></span>（<span id="daily-countdown"></span>）</p>
         </div>
         <div class="progress-wrap">
           <span class="progress-text" id="daily-progress-text">0 / 0</span>
           <div class="progress-bar"><div class="progress-fill" id="daily-progress-fill"></div></div>
         </div>
+        <button type="button" class="btn small head-btn" data-customize="daily" aria-label="デイリーの表示項目を設定">表示項目</button>
       </div>
       <div class="task-list" id="daily-list"></div>
     </section>
 
     <section class="column" data-type="weekly">
       <div class="column-head">
-        <div class="head-title">
-          <h2>ウィークリー<button type="button" class="gear" data-customize="weekly" aria-label="ウィークリーの表示項目を設定" title="表示項目"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M20.11 9.83 L22.83 10.09 A11.0 11.0 0 0 1 22.83 13.91 L20.11 14.17 A8.4 8.4 0 0 1 19.27 16.2 L19.27 16.2 L21.01 18.31 A11.0 11.0 0 0 1 18.31 21.01 L16.2 19.27 A8.4 8.4 0 0 1 14.17 20.11 L14.17 20.11 L13.91 22.83 A11.0 11.0 0 0 1 10.09 22.83 L9.83 20.11 A8.4 8.4 0 0 1 7.8 19.27 L7.8 19.27 L5.69 21.01 A11.0 11.0 0 0 1 2.99 18.31 L4.73 16.2 A8.4 8.4 0 0 1 3.89 14.17 L3.89 14.17 L1.17 13.91 A11.0 11.0 0 0 1 1.17 10.09 L3.89 9.83 A8.4 8.4 0 0 1 4.73 7.8 L4.73 7.8 L2.99 5.69 A11.0 11.0 0 0 1 5.69 2.99 L7.8 4.73 A8.4 8.4 0 0 1 9.83 3.89 L9.83 3.89 L10.09 1.17 A11.0 11.0 0 0 1 13.91 1.17 L14.17 3.89 A8.4 8.4 0 0 1 16.2 4.73 L16.2 4.73 L18.31 2.99 A11.0 11.0 0 0 1 21.01 5.69 L19.27 7.8 A8.4 8.4 0 0 1 20.11 9.83 Z M15.6 12.0 A3.6 3.6 0 1 0 8.4 12.0 A3.6 3.6 0 1 0 15.6 12.0 Z"></path></svg></button></h2>
+        <div>
+          <h2>ウィークリー</h2>
           <p class="reset-info">次のリセット: <span id="weekly-next"></span>（<span id="weekly-countdown"></span>）</p>
         </div>
         <div class="progress-wrap">
           <span class="progress-text" id="weekly-progress-text">0 / 0</span>
           <div class="progress-bar"><div class="progress-fill" id="weekly-progress-fill"></div></div>
         </div>
+        <button type="button" class="btn small head-btn" data-customize="weekly" aria-label="ウィークリーの表示項目を設定">表示項目</button>
       </div>
       <div class="task-list" id="weekly-list"></div>
     </section>
@@ -112,8 +114,16 @@
           </select>
         </label>
         <label class="field">
-          <span>名前 <em>*</em></span>
-          <input type="text" name="name" required maxlength="80">
+          <span>名前（1 行目） <em>*</em></span>
+          <input type="text" name="name" required maxlength="80" placeholder="例: ファーガス">
+        </label>
+        <label class="field">
+          <span>場所（名前の横に小さく表示）</span>
+          <input type="text" name="place" maxlength="20" placeholder="例: ティルコネイル">
+        </label>
+        <label class="field">
+          <span>2 行目（交換内容など。「→」の前後で折り返し）</span>
+          <input type="text" name="sub" maxlength="120" placeholder="例: スチールインゴット×2 → 合金インゴット×1">
         </label>
         <label class="field">
           <span>カテゴリ</span>
@@ -125,8 +135,8 @@
           <input type="number" name="count" min="1" max="999" value="1">
         </label>
         <label class="field">
-          <span>メモ</span>
-          <input type="text" name="note" maxlength="120">
+          <span>メモ（3 行目。素材の入手方法など）</span>
+          <input type="text" name="note" maxlength="120" placeholder="例: 製錬で製作（鉄インゴット＋石炭）">
         </label>
         <fieldset class="field">
           <legend>表示する曜日（未選択なら毎日）</legend>

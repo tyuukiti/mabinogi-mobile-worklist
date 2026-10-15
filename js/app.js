@@ -115,6 +115,8 @@
     if (typeof t.name === "string") out.name = t.name.trim().slice(0, 80);
     if (typeof t.category === "string") out.category = t.category.trim().slice(0, 20);
     if (typeof t.note === "string") out.note = t.note.trim().slice(0, 120);
+    if (typeof t.sub === "string") out.sub = t.sub.trim().slice(0, 120);
+    if (typeof t.place === "string") out.place = t.place.trim().slice(0, 20);
     if (t.count !== undefined && t.count !== "") {
       var c = Number(t.count);
       if (isFinite(c) && c >= 1) out.count = Math.min(999, Math.floor(c));
@@ -188,6 +190,13 @@
     var h = 0;
     for (var i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
     return EXTRA_SLUGS[h % EXTRA_SLUGS.length];
+  }
+
+  // 「A → B」の形は矢印の前後でだけ折り返せるようにする
+  function fmtSub(sub) {
+    var parts = String(sub).split("→");
+    if (parts.length !== 2) return esc(sub);
+    return '<span class="give">' + esc(parts[0].trim()) + '</span><span class="arrow">→</span><span class="get">' + esc(parts[1].trim()) + "</span>";
   }
 
   var toastTimer = null;
@@ -389,7 +398,7 @@
 
     var html = "";
     if (total === 0) {
-      html = '<div class="empty">表示する項目がありません。<br>見出し右の歯車ボタンから選んでください。</div>';
+      html = '<div class="empty">表示する項目がありません。<br>見出し右の「表示項目」から選んでください。</div>';
     } else {
       // 表示順はユーザーの並び順そのまま。カテゴリが切り替わる箇所に見出しを入れる
       var lastCat = null;
@@ -403,8 +412,10 @@
         html += '<div class="' + cls + '" data-id="' + esc(t.id) + '" data-cat="' + catSlug(t.category) + '" role="button" tabindex="0" aria-pressed="' + (it.complete ? "true" : "false") + '">';
         html += '<span class="task-check" aria-hidden="true">' + (it.complete ? "✓" : "") + "</span>";
         html += '<div class="task-body"><div class="task-name">' + esc(t.name);
+        if (t.place) html += '<span class="chip muted">' + esc(t.place) + "</span>";
         if (t.days && t.days.length) html += '<span class="chip muted">' + fmtDays(t.days) + "</span>";
         html += "</div>";
+        if (t.sub) html += '<div class="task-sub">' + fmtSub(t.sub) + "</div>";
         if (t.note) html += '<div class="task-note">' + esc(t.note) + "</div>";
         html += "</div>";
         if (t.count > 1) {
@@ -472,7 +483,7 @@
 
   function matchesQuery(t, q) {
     if (!q) return true;
-    return (t.name + " " + t.category + " " + (t.note || "")).toLowerCase().indexOf(q) >= 0;
+    return (t.name + " " + (t.place || "") + " " + (t.sub || "") + " " + t.category + " " + (t.note || "")).toLowerCase().indexOf(q) >= 0;
   }
 
   function renderCustomize() {
@@ -498,11 +509,13 @@
       html += '<div class="c-row' + (vis ? "" : " hidden-task") + '" data-id="' + esc(t.id) + '" data-cat="' + catSlug(t.category) + '">';
       html += '<input type="checkbox" data-act="vis" ' + (vis ? "checked" : "") + ' aria-label="表示する">';
       html += '<div class="c-body"><div class="c-name">' + esc(t.name);
+      if (t.place) html += '<span class="chip muted">' + esc(t.place) + "</span>";
       if (t.count > 1) html += '<span class="chip">' + t.count + " 回</span>";
       if (!t.builtin) html += '<span class="chip muted">独自</span>';
       else if (t.overridden) html += '<span class="chip muted">編集済</span>';
       if (t.days && t.days.length) html += '<span class="chip muted">' + fmtDays(t.days) + "</span>";
       html += "</div>";
+      if (t.sub) html += '<div class="c-sub">' + fmtSub(t.sub) + "</div>";
       if (t.note) html += '<div class="c-note">' + esc(t.note) + "</div>";
       html += "</div>";
       html += '<div class="c-actions">';
@@ -595,6 +608,8 @@
     form.elements.category.value = t ? t.category : "";
     form.elements.count.value = t ? t.count : 1;
     form.elements.note.value = t ? (t.note || "") : "";
+    form.elements.sub.value = t ? (t.sub || "") : "";
+    form.elements.place.value = t ? (t.place || "") : "";
     var days = t && t.days ? t.days : [];
     Array.prototype.forEach.call(form.querySelectorAll('input[name="days"]'), function (cb) {
       cb.checked = days.indexOf(Number(cb.value)) >= 0;
@@ -620,6 +635,8 @@
       category: form.elements.category.value || "その他",
       count: form.elements.count.value,
       note: form.elements.note.value,
+      sub: form.elements.sub.value,
+      place: form.elements.place.value,
       days: Array.prototype.filter.call(form.querySelectorAll('input[name="days"]'), function (cb) { return cb.checked; })
         .map(function (cb) { return Number(cb.value); })
     });
@@ -631,7 +648,8 @@
       var task = {
         id: genId(),
         type: form.elements.type.value === "weekly" ? "weekly" : "daily",
-        name: fields.name, category: fields.category, count: fields.count, note: fields.note || "", days: fields.days || []
+        name: fields.name, category: fields.category, count: fields.count, note: fields.note || "",
+        sub: fields.sub || "", place: fields.place || "", days: fields.days || []
       };
       state.customTasks.push(task);
       state.visible[task.id] = true;
@@ -648,6 +666,8 @@
         if (fields.category !== (def.category || "その他")) ov.category = fields.category;
         if (fields.count !== (def.count || 1)) ov.count = fields.count;
         if ((fields.note || "") !== (def.note || "")) ov.note = fields.note || "";
+        if ((fields.sub || "") !== (def.sub || "")) ov.sub = fields.sub || "";
+        if ((fields.place || "") !== (def.place || "")) ov.place = fields.place || "";
         var defDays = (def.days || []).slice().sort().join(",");
         var newDays = (fields.days || []).slice().sort().join(",");
         if (defDays !== newDays) ov.days = fields.days || [];
@@ -657,6 +677,7 @@
           if (c.id !== id) return;
           c.name = fields.name; c.category = fields.category; c.count = fields.count;
           c.note = fields.note || ""; c.days = fields.days || [];
+          c.sub = fields.sub || ""; c.place = fields.place || "";
         });
       }
       // 回数が減った場合に進捗が上限を超えないよう丸める

@@ -366,24 +366,15 @@ button, input, select { font: inherit; color: inherit; }
 .btn.file-btn { display: inline-block; }
 .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
 
-/* 見出し横の歯車（表示項目） */
-.gear {
-  appearance: none;
-  border: 0;
-  background: none;
-  padding: 3px;
-  margin-left: 6px;
-  border-radius: 8px;
-  color: var(--text-faint);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  vertical-align: -3px;
-  transition: color 0.12s, background 0.12s;
-}
-.gear:hover { color: var(--sec); background: var(--control-hover); }
-.gear:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
-.gear svg { width: 18px; height: 18px; display: block; }
+/* 見出し右の「表示項目」ボタン */
+.head-btn { flex: 0 0 auto; }
+
+/* 2 行目（交換内容）: 矢印の前後でだけ折り返す */
+.task-sub { font-size: 0.86rem; margin-top: 3px; line-height: 1.45; }
+.task-sub .give, .task-sub .get, .c-sub .give, .c-sub .get { display: inline-block; }
+.task-sub .arrow, .c-sub .arrow { display: inline-block; margin: 0 5px; color: var(--text-faint); }
+.task.done .task-sub { color: var(--text-muted); }
+.c-sub { font-size: 0.8rem; }
 
 /* ---------- columns ---------- */
 .columns {
@@ -411,7 +402,7 @@ button, input, select { font: inherit; color: inherit; }
   border-top: 4px solid var(--sec);
   border-bottom: 1px solid var(--card-border);
 }
-.head-title { flex: 1 1 0; min-width: 0; }
+.column-head > div:first-child { flex: 1 1 0; min-width: 0; }
 .column-head h2 { color: var(--sec); display: flex; align-items: center; gap: 8px; }
 .column-head h2::before {
   content: "";
