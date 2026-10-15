@@ -709,24 +709,27 @@ fieldset.field { border: 0; padding: 0; margin: 0 0 12px; }
   gap: 8px;
   padding: 6px 8px 6px 10px;
   border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
   background: var(--card);
   border: 1px solid var(--card-border);
   border-left: 4px solid var(--cat);
 }
 .c-row:hover { background: var(--card-hover); }
+.c-row:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 .c-row.hidden-task { opacity: 0.55; }
+.c-row.hidden-task:hover { opacity: 0.8; }
 /* 表示項目ダイアログのチェック（同じ kyle1dev の部品） */
-.vis-check { display: inline-flex; flex: 0 0 auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.vis-check input { display: none; }
+.vis-check { display: inline-flex; flex: 0 0 auto; pointer-events: none; }
 .vis-check .checkbox-wrapper { position: relative; width: 22px; height: 22px; border-radius: 7px; transition: transform 0.2s ease; }
 .vis-check .checkbox-bg { position: absolute; inset: 0; border-radius: 7px; border: 2px solid var(--check-border); background: var(--control); transition: all 0.2s ease; }
 .vis-check .checkbox-icon { position: absolute; inset: 0; margin: auto; width: 80%; height: 80%; color: var(--on-accent); transform: scale(0); transition: all 0.2s ease; }
 .vis-check .check-path { stroke-dasharray: 40; stroke-dashoffset: 40; transition: stroke-dashoffset 0.3s ease 0.1s; }
-.vis-check input:checked + .checkbox-wrapper .checkbox-bg { background: var(--cat); border-color: var(--cat); }
-.vis-check input:checked + .checkbox-wrapper .checkbox-icon { transform: scale(1); }
-.vis-check input:checked + .checkbox-wrapper .check-path { stroke-dashoffset: 0; }
-.vis-check:hover .checkbox-wrapper { transform: scale(1.05); }
-.vis-check:active .checkbox-wrapper { transform: scale(0.95); }
+.c-row:not(.hidden-task) .checkbox-bg { background: var(--cat); border-color: var(--cat); }
+.c-row:not(.hidden-task) .checkbox-icon { transform: scale(1); }
+.c-row:not(.hidden-task) .check-path { stroke-dashoffset: 0; }
+.c-row:hover .checkbox-wrapper { transform: scale(1.05); }
+.c-row:active .checkbox-wrapper { transform: scale(0.95); }
 .vis-check .checkbox-wrapper.bounce { animation: check-bounce 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 .c-body { flex: 1 1 auto; min-width: 0; }
 .c-name { font-weight: 500; }

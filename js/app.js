@@ -518,9 +518,10 @@
         html += '<div class="c-group" data-cat="' + catSlug(t.category) + '"><span class="cat-dot"></span>' + esc(t.category) + "</div>";
         lastCat = t.category;
       }
-      html += '<div class="c-row' + (vis ? "" : " hidden-task") + '" data-id="' + esc(t.id) + '" data-cat="' + catSlug(t.category) + '">';
-      html += '<label class="vis-check"><input type="checkbox" data-act="vis" ' + (vis ? "checked" : "") + ' aria-label="表示する">' +
-        '<span class="checkbox-wrapper"><span class="checkbox-bg"></span><svg class="checkbox-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path class="check-path" d="M4 12L10 18L20 6" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></label>';
+      html += '<div class="c-row' + (vis ? "" : " hidden-task") + '" data-id="' + esc(t.id) + '" data-cat="' + catSlug(t.category) +
+        '" role="checkbox" aria-checked="' + (vis ? "true" : "false") + '" tabindex="0">';
+      // チェックは見た目だけ。切り替えは行全体のクリックで行う
+      html += '<span class="vis-check" aria-hidden="true"><span class="checkbox-wrapper"><span class="checkbox-bg"></span><svg class="checkbox-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path class="check-path" d="M4 12L10 18L20 6" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></span>';
       html += '<div class="c-body"><div class="c-name">' + esc(t.name);
       if (t.place) html += '<span class="chip muted">' + esc(t.place) + "</span>";
       if (t.count > 1) html += '<span class="chip">' + t.count + " 回</span>";
@@ -556,6 +557,27 @@
     saveState();
   }
 
+  // 行全体のクリックで表示／非表示を反転する（行は作り直さず、状態だけ更新してアニメーションを走らせる）
+  function toggleVisibleRow(row, t) {
+    var on = !isVisible(t);
+    state.visible[t.id] = on;
+    saveState();
+    row.classList.toggle("hidden-task", !on);
+    row.setAttribute("aria-checked", on ? "true" : "false");
+    var wrap = row.querySelector(".checkbox-wrapper");
+    if (wrap) { wrap.classList.remove("bounce"); void wrap.offsetWidth; wrap.classList.add("bounce"); }
+    render();
+  }
+
+  function onCustomizeKey(e) {
+    if (e.key !== " " && e.key !== "Enter") return;
+    var row = e.target.closest(".c-row");
+    if (!row || e.target !== row) return;
+    e.preventDefault();
+    var t = findTask(row.getAttribute("data-id"));
+    if (t) toggleVisibleRow(row, t);
+  }
+
   function onCustomizeClick(e) {
     var row = e.target.closest(".c-row");
     if (!row) return;
@@ -563,18 +585,9 @@
     var t = findTask(id);
     if (!t) return;
     var el = e.target.closest("[data-act]");
-    if (!el) return;
+    if (!el) { toggleVisibleRow(row, t); return; }
     var act = el.getAttribute("data-act");
-    if (act === "vis") {
-      if (e.type !== "change") return; // チェックボックスは change イベントでのみ処理
-      state.visible[id] = el.checked;
-      saveState();
-      // 行を作り直さずに状態だけ更新する（チェックのアニメーションを素直に走らせるため）
-      row.classList.toggle("hidden-task", !el.checked);
-      var wrap = el.nextElementSibling;
-      if (wrap) { wrap.classList.remove("bounce"); void wrap.offsetWidth; wrap.classList.add("bounce"); }
-      render();
-    } else if (act === "up" || act === "down") {
+    if (act === "up" || act === "down") {
       moveTask(id, act === "up" ? -1 : 1);
       renderCustomize();
       render();
@@ -840,7 +853,7 @@
     // カスタマイズ
     $("customize-search").addEventListener("input", renderCustomize);
     $("customize-list").addEventListener("click", onCustomizeClick);
-    $("customize-list").addEventListener("change", onCustomizeClick);
+    $("customize-list").addEventListener("keydown", onCustomizeKey);
     $("btn-show-all").addEventListener("click", function () { setAllVisible(true); });
     $("btn-hide-all").addEventListener("click", function () { setAllVisible(false); });
     $("btn-add-task").addEventListener("click", function () { openEdit(null); });
