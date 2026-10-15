@@ -56,6 +56,7 @@
   --text-faint: var(--ctp-overlay1);
   --shadow: 0 1px 2px rgba(76, 79, 105, 0.05), 0 8px 24px rgba(76, 79, 105, 0.08);
   --backdrop: rgba(76, 79, 105, 0.35);
+  --btn-glow: rgba(76, 79, 105, 0.14);
 }
 :root[data-flavor="frappe"] {
   --ctp-rosewater: #f2d5cf;
@@ -100,6 +101,7 @@
   --text-faint: var(--ctp-overlay1);
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.3);
   --backdrop: rgba(0, 0, 0, 0.55);
+  --btn-glow: rgba(255, 255, 255, 0.22);
 }
 :root[data-flavor="macchiato"] {
   --ctp-rosewater: #f4dbd6;
@@ -144,6 +146,7 @@
   --text-faint: var(--ctp-overlay1);
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.3);
   --backdrop: rgba(0, 0, 0, 0.55);
+  --btn-glow: rgba(255, 255, 255, 0.22);
 }
 :root[data-flavor="mocha"] {
   --ctp-rosewater: #f5e0dc;
@@ -188,6 +191,7 @@
   --text-faint: var(--ctp-overlay1);
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.3);
   --backdrop: rgba(0, 0, 0, 0.55);
+  --btn-glow: rgba(255, 255, 255, 0.22);
 }
 @media (prefers-color-scheme: dark) {
 :root[data-flavor="auto"] {
@@ -233,6 +237,7 @@
     --text-faint: var(--ctp-overlay1);
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.3);
     --backdrop: rgba(0, 0, 0, 0.55);
+  --btn-glow: rgba(255, 255, 255, 0.22);
   }
 }
 
@@ -342,9 +347,10 @@ button, input, select { font: inherit; color: inherit; }
 .banner.warn { background: var(--panel); border-left: 4px solid var(--warn); color: var(--text); }
 
 /* ---------- buttons ----------
-   通常ボタン: 控えめな色変化のみ
-   プライマリ: Uiverse.io by KlaujonRuamni (evil-sheep-56) の浮き上がり + 影 */
+   Uiverse.io by iZOXVL (wise-goat-75): 2px 枠のピル型。ホバーで枠と背景が少し明るくなり、中心から淡い光が広がる */
 .btn {
+  position: relative;
+  overflow: hidden;
   appearance: none;
   border: 2px solid var(--border);
   background: var(--control);
@@ -353,29 +359,38 @@ button, input, select { font: inherit; color: inherit; }
   padding: 6px 14px;
   cursor: pointer;
   line-height: 1.3;
-  font-weight: 600;
+  font-weight: 700;
   white-space: nowrap;
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  outline: none;
+  transition: all 0.4s ease;
 }
-.btn:hover { background: var(--control-hover); border-color: var(--primary); }
-.btn:active { transform: scale(0.96); }
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, var(--btn-glow) 0%, transparent 70%);
+  transform: scale(0);
+  transition: transform 0.5s ease;
+  pointer-events: none;
+}
+.btn:hover::after { transform: scale(4); }
+.btn:hover { border-color: var(--ctp-overlay0); background: var(--control-hover); }
+.btn:active { transform: scale(0.97); }
 .btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 .btn.small { padding: 4px 12px; font-size: 0.85rem; }
 .btn.icon { width: 34px; height: 34px; padding: 0; font-size: 1.2rem; line-height: 1; }
 .btn.danger { color: var(--danger); border-color: var(--danger); }
 .btn.danger:hover { border-color: var(--danger); }
-.btn.primary {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: var(--on-accent);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease-in-out;
-}
-.btn.primary:hover { background: var(--ctp-sapphire); border-color: var(--ctp-sapphire); transform: translateY(-2px); }
-.btn.primary:active { transform: scale(0.95); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); }
+.btn.primary { background: var(--primary); border-color: var(--primary); color: var(--on-accent); }
+.btn.primary:hover { background: var(--ctp-sapphire); border-color: var(--ctp-sapphire); }
 .btn[disabled] { opacity: 0.4; cursor: default; }
+.btn[disabled]::after { display: none; }
 .btn[disabled]:hover { background: var(--control); border-color: var(--border); transform: none; }
-.btn.danger[disabled]:hover { color: var(--danger); border-color: var(--danger); }
+.btn.danger[disabled]:hover { border-color: var(--danger); }
+.btn.primary[disabled]:hover { background: var(--primary); border-color: var(--primary); }
 .btn.file-btn { display: inline-block; }
 .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
 
@@ -501,44 +516,41 @@ button, input, select { font: inherit; color: inherit; }
 .task.done:hover { opacity: 0.8; }
 .task.done .task-name { text-decoration: line-through; color: var(--text-muted); }
 
-/* チェックボックス: Uiverse.io by cssbuttons-io (short-shrimp-54 "squishy") を Catppuccin 色で */
+/* チェックボックス: Uiverse.io by kyle1dev (afraid-wasp-94) を Catppuccin 色で。チェック時に線が描かれて弾む */
 .task-check {
   position: relative;
   width: 24px;
   height: 24px;
   margin-top: 1px;
   border: 2px solid var(--check-border);
-  border-radius: 6px;
+  border-radius: 8px;
   background: var(--control);
-  transition: background 0.1s ease, border-color 0.1s ease;
+  color: var(--on-accent);
+  transition: all 0.2s ease;
 }
-.task-check::after {
-  content: "";
+.task-check .checkbox-icon {
   position: absolute;
-  top: 2px;
-  left: 7px;
-  width: 6px;
-  height: 12px;
-  opacity: 0;
-  transform: rotate(45deg) scale(0);
-  border-right: 2.5px solid var(--on-accent);
-  border-bottom: 2.5px solid var(--on-accent);
-  transition: all 0.3s ease;
-  transition-delay: 0.15s;
+  inset: 0;
+  margin: auto;
+  width: 80%;
+  height: 80%;
+  transform: scale(0);
+  transition: transform 0.2s ease;
 }
+.task-check .check-path { stroke-dasharray: 40; stroke-dashoffset: 40; transition: stroke-dashoffset 0.3s ease 0.1s; }
+.task:hover .task-check { transform: scale(1.05); }
+.task:active .task-check { transform: scale(0.95); }
 .task.partial .task-check { border-color: var(--cat); }
-.task.done .task-check { border-color: transparent; background: var(--cat); }
-.task.done .task-check::after { opacity: 1; transform: rotate(45deg) scale(1); }
-.task.pop .task-check { animation: jelly 0.6s ease; }
-@keyframes jelly {
-  from { transform: scale(1, 1); }
-  30% { transform: scale(1.25, 0.75); }
-  40% { transform: scale(0.75, 1.25); }
-  50% { transform: scale(1.15, 0.85); }
-  65% { transform: scale(0.95, 1.05); }
-  75% { transform: scale(1.05, 0.95); }
-  to { transform: scale(1, 1); }
-}
+.task.done .task-check { background: var(--cat); border-color: var(--cat); }
+.task.done .task-check .checkbox-icon { transform: scale(1); }
+.task.done .task-check .check-path { stroke-dashoffset: 0; }
+/* 今チェックしたカードだけアニメーション（再描画のたびに全部が動かないように） */
+.task.pop .task-check { animation: check-bounce 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.task.pop .task-check .checkbox-icon { animation: check-in 0.2s ease; }
+.task.pop .task-check .check-path { animation: check-draw 0.3s ease 0.1s both; }
+@keyframes check-bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+@keyframes check-in { from { transform: scale(0); } to { transform: scale(1); } }
+@keyframes check-draw { from { stroke-dashoffset: 40; } to { stroke-dashoffset: 0; } }
 
 .task-body { min-width: 0; }
 .task-name { font-weight: 600; line-height: 1.35; }
@@ -584,35 +596,35 @@ button, input, select { font: inherit; color: inherit; }
 }
 .toolbar .spacer { flex: 1 1 auto; }
 .check-inline { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
-/* トグル: Uiverse.io by ozgeozkaraa01 (evil-cheetah-7) を Catppuccin 色で */
+/* トグル: Uiverse.io by TimTrayler (quiet-swan-35) を Catppuccin 色で */
 .check-inline input {
   appearance: none;
   -webkit-appearance: none;
   position: relative;
   flex: 0 0 auto;
-  width: 44px;
-  height: 24px;
+  font-size: 13px;
+  width: 3.7em;
+  height: 1.8em;
   margin: 0;
   border: 0;
-  border-radius: 12px;
+  border-radius: 30px;
   background: var(--track);
   cursor: pointer;
-  transition: background-color 0.4s ease;
+  transition: 0.2s;
 }
 .check-inline input::before {
   content: "";
   position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--ctp-base);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  transition: transform 0.4s ease;
+  height: 1.4em;
+  width: 1.4em;
+  left: 0.2em;
+  bottom: 0.2em;
+  border-radius: 20px;
+  background: var(--ctp-overlay1);
+  transition: 0.4s;
 }
-.check-inline input:checked { background: var(--primary); }
-.check-inline input:checked::before { transform: translateX(20px); }
+.check-inline input:checked { background: var(--ctp-surface2); }
+.check-inline input:checked::before { background: var(--primary); transform: translateX(1.9em); }
 .check-inline input:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 
 /* ---------- dialogs ---------- */
@@ -703,36 +715,19 @@ fieldset.field { border: 0; padding: 0; margin: 0 0 12px; }
 }
 .c-row:hover { background: var(--card-hover); }
 .c-row.hidden-task { opacity: 0.55; }
-.c-row input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  position: relative;
-  flex: 0 0 auto;
-  width: 22px;
-  height: 22px;
-  margin: 0;
-  border: 2px solid var(--check-border);
-  border-radius: 6px;
-  background: var(--control);
-  cursor: pointer;
-  transition: background 0.1s ease, border-color 0.1s ease;
-}
-.c-row input[type="checkbox"]::after {
-  content: "";
-  position: absolute;
-  top: 1px;
-  left: 6px;
-  width: 5px;
-  height: 11px;
-  opacity: 0;
-  transform: rotate(45deg) scale(0);
-  border-right: 2.5px solid var(--on-accent);
-  border-bottom: 2.5px solid var(--on-accent);
-  transition: all 0.3s ease;
-}
-.c-row input[type="checkbox"]:checked { border-color: transparent; background: var(--cat); }
-.c-row input[type="checkbox"]:checked::after { opacity: 1; transform: rotate(45deg) scale(1); }
-.c-row input[type="checkbox"]:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+/* 表示項目ダイアログのチェック（同じ kyle1dev の部品） */
+.vis-check { display: inline-flex; flex: 0 0 auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.vis-check input { display: none; }
+.vis-check .checkbox-wrapper { position: relative; width: 22px; height: 22px; border-radius: 7px; transition: transform 0.2s ease; }
+.vis-check .checkbox-bg { position: absolute; inset: 0; border-radius: 7px; border: 2px solid var(--check-border); background: var(--control); transition: all 0.2s ease; }
+.vis-check .checkbox-icon { position: absolute; inset: 0; margin: auto; width: 80%; height: 80%; color: var(--on-accent); transform: scale(0); transition: all 0.2s ease; }
+.vis-check .check-path { stroke-dasharray: 40; stroke-dashoffset: 40; transition: stroke-dashoffset 0.3s ease 0.1s; }
+.vis-check input:checked + .checkbox-wrapper .checkbox-bg { background: var(--cat); border-color: var(--cat); }
+.vis-check input:checked + .checkbox-wrapper .checkbox-icon { transform: scale(1); }
+.vis-check input:checked + .checkbox-wrapper .check-path { stroke-dashoffset: 0; }
+.vis-check:hover .checkbox-wrapper { transform: scale(1.05); }
+.vis-check:active .checkbox-wrapper { transform: scale(0.95); }
+.vis-check .checkbox-wrapper.bounce { animation: check-bounce 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 .c-body { flex: 1 1 auto; min-width: 0; }
 .c-name { font-weight: 500; }
 .c-note { font-size: 0.76rem; color: var(--text-muted); }

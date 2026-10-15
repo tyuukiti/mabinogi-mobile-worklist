@@ -410,7 +410,7 @@
         }
         var cls = "task" + (it.complete ? " done" : (it.n > 0 ? " partial" : ""));
         html += '<div class="' + cls + '" data-id="' + esc(t.id) + '" data-cat="' + catSlug(t.category) + '" role="button" tabindex="0" aria-pressed="' + (it.complete ? "true" : "false") + '">';
-        html += '<span class="task-check" aria-hidden="true"></span>';
+        html += '<span class="task-check" aria-hidden="true"><svg class="checkbox-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path class="check-path" d="M4 12L10 18L20 6" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>';
         html += '<div class="task-body"><div class="task-name">' + esc(t.name);
         if (t.place) html += '<span class="chip muted">' + esc(t.place) + "</span>";
         if (t.days && t.days.length) html += '<span class="chip muted">' + fmtDays(t.days) + "</span>";
@@ -519,7 +519,8 @@
         lastCat = t.category;
       }
       html += '<div class="c-row' + (vis ? "" : " hidden-task") + '" data-id="' + esc(t.id) + '" data-cat="' + catSlug(t.category) + '">';
-      html += '<input type="checkbox" data-act="vis" ' + (vis ? "checked" : "") + ' aria-label="表示する">';
+      html += '<label class="vis-check"><input type="checkbox" data-act="vis" ' + (vis ? "checked" : "") + ' aria-label="表示する">' +
+        '<span class="checkbox-wrapper"><span class="checkbox-bg"></span><svg class="checkbox-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path class="check-path" d="M4 12L10 18L20 6" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></label>';
       html += '<div class="c-body"><div class="c-name">' + esc(t.name);
       if (t.place) html += '<span class="chip muted">' + esc(t.place) + "</span>";
       if (t.count > 1) html += '<span class="chip">' + t.count + " 回</span>";
@@ -568,7 +569,10 @@
       if (e.type !== "change") return; // チェックボックスは change イベントでのみ処理
       state.visible[id] = el.checked;
       saveState();
-      renderCustomize();
+      // 行を作り直さずに状態だけ更新する（チェックのアニメーションを素直に走らせるため）
+      row.classList.toggle("hidden-task", !el.checked);
+      var wrap = el.nextElementSibling;
+      if (wrap) { wrap.classList.remove("bounce"); void wrap.offsetWidth; wrap.classList.add("bounce"); }
       render();
     } else if (act === "up" || act === "down") {
       moveTask(id, act === "up" ? -1 : 1);

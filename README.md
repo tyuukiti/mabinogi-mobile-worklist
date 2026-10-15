@@ -77,13 +77,13 @@ Catppuccin は MIT License です。
 
 ## UI 部品の出典（Uiverse.io）
 
-プライマリボタン・チェックボックス・トグルは [Uiverse.io](https://uiverse.io)（MIT License）の作品を基に、色を Catppuccin のトークンへ置き換えて使っています。
+ボタン・チェックボックス・トグルは [Uiverse.io](https://uiverse.io)（MIT License）の次の作品を基に、色を Catppuccin のトークンへ置き換えて使っています。
 
 | 部品 | 作者 / 作品 |
 |---|---|
-| プライマリボタン（浮き上がり + 影） | KlaujonRuamni / [evil-sheep-56](https://uiverse.io/KlaujonRuamni/evil-sheep-56) |
-| チェックボックス（弾むアニメーション） | cssbuttons-io / [short-shrimp-54](https://uiverse.io/cssbuttons-io/short-shrimp-54) |
-| トグルスイッチ | ozgeozkaraa01 / [evil-cheetah-7](https://uiverse.io/ozgeozkaraa01/evil-cheetah-7) |
+| ボタン（ホバーで中心から淡い光） | iZOXVL / [wise-goat-75](https://uiverse.io/iZOXVL/wise-goat-75) |
+| チェックボックス（線が描かれて弾む） | kyle1dev / [afraid-wasp-94](https://uiverse.io/kyle1dev/afraid-wasp-94) |
+| トグルスイッチ | TimTrayler / [quiet-swan-35](https://uiverse.io/TimTrayler/quiet-swan-35) |
 
 ## 既定タスクの出典
 
