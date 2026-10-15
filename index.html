@@ -39,30 +39,28 @@
   <main class="columns">
     <section class="column" data-type="daily">
       <div class="column-head">
-        <div>
-          <h2>デイリー</h2>
+        <div class="head-title">
+          <h2>デイリー<button type="button" class="gear" data-customize="daily" aria-label="デイリーの表示項目を設定" title="表示項目"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M20.11 9.83 L22.83 10.09 A11.0 11.0 0 0 1 22.83 13.91 L20.11 14.17 A8.4 8.4 0 0 1 19.27 16.2 L19.27 16.2 L21.01 18.31 A11.0 11.0 0 0 1 18.31 21.01 L16.2 19.27 A8.4 8.4 0 0 1 14.17 20.11 L14.17 20.11 L13.91 22.83 A11.0 11.0 0 0 1 10.09 22.83 L9.83 20.11 A8.4 8.4 0 0 1 7.8 19.27 L7.8 19.27 L5.69 21.01 A11.0 11.0 0 0 1 2.99 18.31 L4.73 16.2 A8.4 8.4 0 0 1 3.89 14.17 L3.89 14.17 L1.17 13.91 A11.0 11.0 0 0 1 1.17 10.09 L3.89 9.83 A8.4 8.4 0 0 1 4.73 7.8 L4.73 7.8 L2.99 5.69 A11.0 11.0 0 0 1 5.69 2.99 L7.8 4.73 A8.4 8.4 0 0 1 9.83 3.89 L9.83 3.89 L10.09 1.17 A11.0 11.0 0 0 1 13.91 1.17 L14.17 3.89 A8.4 8.4 0 0 1 16.2 4.73 L16.2 4.73 L18.31 2.99 A11.0 11.0 0 0 1 21.01 5.69 L19.27 7.8 A8.4 8.4 0 0 1 20.11 9.83 Z M15.6 12.0 A3.6 3.6 0 1 0 8.4 12.0 A3.6 3.6 0 1 0 15.6 12.0 Z"></path></svg></button></h2>
           <p class="reset-info">次のリセット: <span id="daily-next"></span>（<span id="daily-countdown"></span>）</p>
         </div>
         <div class="progress-wrap">
           <span class="progress-text" id="daily-progress-text">0 / 0</span>
           <div class="progress-bar"><div class="progress-fill" id="daily-progress-fill"></div></div>
         </div>
-        <button type="button" class="btn icon gear" data-customize="daily" aria-label="デイリーの表示項目を設定" title="デイリーの表示項目"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
       </div>
       <div class="task-list" id="daily-list"></div>
     </section>
 
     <section class="column" data-type="weekly">
       <div class="column-head">
-        <div>
-          <h2>ウィークリー</h2>
+        <div class="head-title">
+          <h2>ウィークリー<button type="button" class="gear" data-customize="weekly" aria-label="ウィークリーの表示項目を設定" title="表示項目"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M20.11 9.83 L22.83 10.09 A11.0 11.0 0 0 1 22.83 13.91 L20.11 14.17 A8.4 8.4 0 0 1 19.27 16.2 L19.27 16.2 L21.01 18.31 A11.0 11.0 0 0 1 18.31 21.01 L16.2 19.27 A8.4 8.4 0 0 1 14.17 20.11 L14.17 20.11 L13.91 22.83 A11.0 11.0 0 0 1 10.09 22.83 L9.83 20.11 A8.4 8.4 0 0 1 7.8 19.27 L7.8 19.27 L5.69 21.01 A11.0 11.0 0 0 1 2.99 18.31 L4.73 16.2 A8.4 8.4 0 0 1 3.89 14.17 L3.89 14.17 L1.17 13.91 A11.0 11.0 0 0 1 1.17 10.09 L3.89 9.83 A8.4 8.4 0 0 1 4.73 7.8 L4.73 7.8 L2.99 5.69 A11.0 11.0 0 0 1 5.69 2.99 L7.8 4.73 A8.4 8.4 0 0 1 9.83 3.89 L9.83 3.89 L10.09 1.17 A11.0 11.0 0 0 1 13.91 1.17 L14.17 3.89 A8.4 8.4 0 0 1 16.2 4.73 L16.2 4.73 L18.31 2.99 A11.0 11.0 0 0 1 21.01 5.69 L19.27 7.8 A8.4 8.4 0 0 1 20.11 9.83 Z M15.6 12.0 A3.6 3.6 0 1 0 8.4 12.0 A3.6 3.6 0 1 0 15.6 12.0 Z"></path></svg></button></h2>
           <p class="reset-info">次のリセット: <span id="weekly-next"></span>（<span id="weekly-countdown"></span>）</p>
         </div>
         <div class="progress-wrap">
           <span class="progress-text" id="weekly-progress-text">0 / 0</span>
           <div class="progress-bar"><div class="progress-fill" id="weekly-progress-fill"></div></div>
         </div>
-        <button type="button" class="btn icon gear" data-customize="weekly" aria-label="ウィークリーの表示項目を設定" title="ウィークリーの表示項目"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
       </div>
       <div class="task-list" id="weekly-list"></div>
     </section>

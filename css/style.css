@@ -2,7 +2,9 @@
    配色: Catppuccin (https://catppuccin.com / MIT License)
    - フレーバー: latte（ライト） / frappe / macchiato / mocha（ダーク）
    - data-flavor="auto" は OS 設定に合わせて latte / mocha を切り替える
-   - --ctp-* は公式 palette.json から生成。役割トークンはそれを参照する
+   - 使う色はパレットの色そのもの。混色で中間色を作らない
+     （背景・面は Base / Mantle / Crust / Surface、文字は Text / Subtext / Overlay、
+       強調は 14 色のアクセント、アクセント上の文字は Base）
    ============================================================ */
 :root {
   --max-w: 1240px;
@@ -43,9 +45,12 @@
   --panel: var(--ctp-base);
   --card: var(--ctp-base);
   --card-border: var(--ctp-surface0);
+  --card-hover: var(--ctp-mantle);
   --control: var(--ctp-base);
+  --control-hover: var(--ctp-crust);
   --border: var(--ctp-surface0);
   --track: var(--ctp-surface0);
+  --check-border: var(--ctp-overlay0);
   --text: var(--ctp-text);
   --text-muted: var(--ctp-subtext0);
   --text-faint: var(--ctp-overlay1);
@@ -84,9 +89,12 @@
   --panel: var(--ctp-mantle);
   --card: var(--ctp-surface0);
   --card-border: var(--ctp-surface0);
+  --card-hover: var(--ctp-surface1);
   --control: var(--ctp-surface0);
+  --control-hover: var(--ctp-surface1);
   --border: var(--ctp-surface1);
   --track: var(--ctp-surface1);
+  --check-border: var(--ctp-overlay0);
   --text: var(--ctp-text);
   --text-muted: var(--ctp-subtext0);
   --text-faint: var(--ctp-overlay1);
@@ -125,9 +133,12 @@
   --panel: var(--ctp-mantle);
   --card: var(--ctp-surface0);
   --card-border: var(--ctp-surface0);
+  --card-hover: var(--ctp-surface1);
   --control: var(--ctp-surface0);
+  --control-hover: var(--ctp-surface1);
   --border: var(--ctp-surface1);
   --track: var(--ctp-surface1);
+  --check-border: var(--ctp-overlay0);
   --text: var(--ctp-text);
   --text-muted: var(--ctp-subtext0);
   --text-faint: var(--ctp-overlay1);
@@ -166,9 +177,12 @@
   --panel: var(--ctp-mantle);
   --card: var(--ctp-surface0);
   --card-border: var(--ctp-surface0);
+  --card-hover: var(--ctp-surface1);
   --control: var(--ctp-surface0);
+  --control-hover: var(--ctp-surface1);
   --border: var(--ctp-surface1);
   --track: var(--ctp-surface1);
+  --check-border: var(--ctp-overlay0);
   --text: var(--ctp-text);
   --text-muted: var(--ctp-subtext0);
   --text-faint: var(--ctp-overlay1);
@@ -208,9 +222,12 @@
     --panel: var(--ctp-mantle);
     --card: var(--ctp-surface0);
     --card-border: var(--ctp-surface0);
+    --card-hover: var(--ctp-surface1);
     --control: var(--ctp-surface0);
+    --control-hover: var(--ctp-surface1);
     --border: var(--ctp-surface1);
     --track: var(--ctp-surface1);
+    --check-border: var(--ctp-overlay0);
     --text: var(--ctp-text);
     --text-muted: var(--ctp-subtext0);
     --text-faint: var(--ctp-overlay1);
@@ -225,7 +242,6 @@
   --on-accent: var(--ctp-base);
   --daily: var(--ctp-peach);
   --weekly: var(--ctp-mauve);
-  --done: var(--ctp-green);
   --danger: var(--ctp-red);
   --warn: var(--ctp-yellow);
 
@@ -245,10 +261,6 @@
   --cat-x4: var(--ctp-flamingo);
   --cat-x5: var(--ctp-rosewater);
   --cat-x6: var(--ctp-overlay2);
-
-  --primary-soft: color-mix(in srgb, var(--primary) 16%, var(--card));
-  --done-soft: color-mix(in srgb, var(--done) 16%, var(--card));
-  --danger-soft: color-mix(in srgb, var(--danger) 16%, var(--card));
 }
 
 /* カテゴリ → --cat の割り当て */
@@ -284,28 +296,17 @@ body {
   color: var(--text);
   background: var(--bg);
   min-height: 100vh;
-  padding: 4px 16px 32px;
-}
-/* 画面上端のアクセントライン */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--daily), var(--primary), var(--weekly));
-  z-index: 60;
+  padding: 0 16px 32px;
 }
 
 h1, h2, h3 { margin: 0; font-weight: 700; }
 h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
 h1::before {
   content: "";
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--daily), var(--weekly));
+  background: var(--ctp-mauve);
   flex: 0 0 auto;
 }
 h2 { font-size: 1.1rem; }
@@ -326,10 +327,10 @@ button, input, select { font: inherit; color: inherit; }
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 16px 0 12px;
+  padding: 18px 0 12px;
   flex-wrap: wrap;
 }
-.app-header .sub { margin: 4px 0 0 24px; color: var(--text-muted); font-size: 0.9rem; }
+.app-header .sub { margin: 4px 0 0 22px; color: var(--text-muted); font-size: 0.9rem; }
 .header-actions { display: flex; gap: 8px; }
 
 .banner {
@@ -338,7 +339,7 @@ button, input, select { font: inherit; color: inherit; }
   border-radius: var(--radius);
   font-size: 0.9rem;
 }
-.banner.warn { background: color-mix(in srgb, var(--warn) 25%, var(--panel)); color: var(--text); }
+.banner.warn { background: var(--panel); border-left: 4px solid var(--warn); color: var(--text); }
 
 /* ---------- buttons ---------- */
 .btn {
@@ -353,17 +354,36 @@ button, input, select { font: inherit; color: inherit; }
   white-space: nowrap;
   transition: background 0.12s, border-color 0.12s;
 }
-.btn:hover { background: color-mix(in srgb, var(--text) 7%, var(--control)); border-color: color-mix(in srgb, var(--primary) 45%, var(--border)); }
+.btn:hover { background: var(--control-hover); }
 .btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 .btn.small { padding: 5px 10px; font-size: 0.85rem; }
 .btn.primary { background: var(--primary); border-color: var(--primary); color: var(--on-accent); font-weight: 600; }
-.btn.primary:hover { filter: brightness(1.06); }
-.btn.danger { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 55%, var(--border)); }
-.btn.danger:hover { background: var(--danger-soft); }
+.btn.primary:hover { background: var(--ctp-sapphire); border-color: var(--ctp-sapphire); }
+.btn.danger { color: var(--danger); border-color: var(--danger); }
+.btn.danger:hover { background: var(--control-hover); }
 .btn.icon { width: 34px; height: 34px; padding: 0; font-size: 1.2rem; line-height: 1; border-radius: 50%; }
 .btn[disabled] { opacity: 0.4; cursor: default; }
 .btn.file-btn { display: inline-block; }
 .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* 見出し横の歯車（表示項目） */
+.gear {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 3px;
+  margin-left: 6px;
+  border-radius: 8px;
+  color: var(--text-faint);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: -3px;
+  transition: color 0.12s, background 0.12s;
+}
+.gear:hover { color: var(--sec); background: var(--control-hover); }
+.gear:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.gear svg { width: 18px; height: 18px; display: block; }
 
 /* ---------- columns ---------- */
 .columns {
@@ -389,8 +409,9 @@ button, input, select { font: inherit; color: inherit; }
   gap: 12px;
   padding: 14px 16px;
   border-top: 4px solid var(--sec);
-  background: color-mix(in srgb, var(--sec) 12%, var(--panel));
+  border-bottom: 1px solid var(--card-border);
 }
+.head-title { flex: 1 1 0; min-width: 0; }
 .column-head h2 { color: var(--sec); display: flex; align-items: center; gap: 8px; }
 .column-head h2::before {
   content: "";
@@ -398,27 +419,15 @@ button, input, select { font: inherit; color: inherit; }
   height: 10px;
   border-radius: 50%;
   background: var(--sec);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--sec) 25%, transparent);
+  flex: 0 0 auto;
 }
 .reset-info { margin: 4px 0 0; font-size: 0.8rem; color: var(--text-muted); }
-.column-head .gear {
-  flex: 0 0 auto;
-  width: 34px;
-  height: 34px;
-  color: var(--sec);
-  background: color-mix(in srgb, var(--sec) 12%, var(--panel));
-  border-color: color-mix(in srgb, var(--sec) 35%, var(--border));
-}
-.column-head .gear:hover { background: color-mix(in srgb, var(--sec) 24%, var(--panel)); border-color: var(--sec); }
-.column-head .gear svg { display: block; }
-/* head-title-shrink: 見出しブロックは縮めて、歯車を同じ行の右端に置く */
-.column-head > div:first-child { flex: 1 1 0; min-width: 0; }
 .progress-wrap { min-width: 130px; text-align: right; }
 .progress-text { font-size: 0.9rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--sec); }
 .progress-bar {
   height: 8px;
   margin-top: 6px;
-  background: color-mix(in srgb, var(--sec) 22%, var(--track));
+  background: var(--track);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -429,7 +438,6 @@ button, input, select { font: inherit; color: inherit; }
   border-radius: 999px;
   transition: width 0.25s;
 }
-.progress-fill.complete { background: var(--done); }
 
 /* ---------- task cards ---------- */
 .task-list {
@@ -479,29 +487,22 @@ button, input, select { font: inherit; color: inherit; }
   background: var(--card);
   cursor: pointer;
   user-select: none;
-  transition: background 0.12s, border-color 0.12s, transform 0.08s;
+  transition: background 0.12s, opacity 0.12s, transform 0.08s;
 }
-.task:hover {
-  background: color-mix(in srgb, var(--cat) 10%, var(--card));
-  border-color: color-mix(in srgb, var(--cat) 35%, var(--card-border));
-  border-left-color: var(--cat);
-}
+.task:hover { background: var(--card-hover); }
 .task:active { transform: scale(0.995); }
 .task:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
-.task.done {
-  background: color-mix(in srgb, var(--done) 16%, var(--card));
-  border-color: color-mix(in srgb, var(--done) 30%, var(--card-border));
-  border-left-color: var(--done);
-}
+/* 完了: 色は足さず、カード全体を薄くして取り消し線 */
+.task.done { opacity: 0.55; }
+.task.done:hover { opacity: 0.8; }
 .task.done .task-name { text-decoration: line-through; color: var(--text-muted); }
-.task.done .task-note { opacity: 0.7; }
 
 .task-check {
   width: 22px;
   height: 22px;
   margin-top: 1px;
-  border: 2px solid color-mix(in srgb, var(--cat) 60%, var(--border));
-  border-radius: 8px;
+  border: 2px solid var(--check-border);
+  border-radius: 7px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -510,11 +511,8 @@ button, input, select { font: inherit; color: inherit; }
   color: var(--on-accent);
   background: var(--control);
 }
-.task.partial .task-check {
-  border-color: var(--cat);
-  background: color-mix(in srgb, var(--cat) 22%, var(--control));
-}
-.task.done .task-check { background: var(--done); border-color: var(--done); }
+.task.partial .task-check { border-color: var(--cat); }
+.task.done .task-check { background: var(--cat); border-color: var(--cat); }
 
 .task-body { min-width: 0; }
 .task-name { font-weight: 600; line-height: 1.35; }
@@ -528,7 +526,7 @@ button, input, select { font: inherit; color: inherit; }
   gap: 2px;
   padding: 2px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--cat) 12%, var(--card));
+  background: var(--track);
   font-variant-numeric: tabular-nums;
   font-size: 0.9rem;
 }
@@ -540,13 +538,13 @@ button, input, select { font: inherit; color: inherit; }
   font-size: 0.7rem;
   padding: 1px 8px;
   border-radius: 999px;
-  background: var(--primary-soft);
+  background: var(--track);
   color: var(--primary);
   margin-left: 6px;
   vertical-align: middle;
   font-weight: 600;
 }
-.chip.muted { background: color-mix(in srgb, var(--text) 8%, var(--card)); color: var(--text-muted); }
+.chip.muted { color: var(--text-muted); }
 
 /* ---------- footer toolbar ---------- */
 .toolbar {
@@ -659,7 +657,7 @@ fieldset.field { border: 0; padding: 0; margin: 0 0 12px; }
   border: 1px solid var(--card-border);
   border-left: 4px solid var(--cat);
 }
-.c-row:hover { background: color-mix(in srgb, var(--cat) 10%, var(--card)); }
+.c-row:hover { background: var(--card-hover); }
 .c-row.hidden-task { opacity: 0.55; }
 .c-row input[type="checkbox"] { width: 18px; height: 18px; flex: 0 0 auto; cursor: pointer; accent-color: var(--primary); }
 .c-body { flex: 1 1 auto; min-width: 0; }
@@ -695,7 +693,7 @@ fieldset.field { border: 0; padding: 0; margin: 0 0 12px; }
 }
 
 @media (max-width: 520px) {
-  body { padding: 4px 12px 24px; }
+  body { padding: 0 12px 24px; }
   .task-list { padding: 10px; gap: 6px; }
   /* 見出し行は折り返し、達成率は 2 行目に横並びで出す */
   .column-head { flex-wrap: wrap; padding: 12px 14px; }
