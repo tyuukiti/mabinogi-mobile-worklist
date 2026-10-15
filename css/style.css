@@ -347,7 +347,7 @@ button, input, select { font: inherit; color: inherit; }
 .banner.warn { background: var(--panel); border-left: 4px solid var(--warn); color: var(--text); }
 
 /* ---------- intro（概要文） ---------- */
-.intro { margin: 0 0 14px; font-size: 0.92rem; color: var(--text-muted); }
+.intro { margin-bottom: 14px; font-size: 0.92rem; color: var(--text-muted); }
 .intro-lead { margin: 0; }
 .intro-more { margin-top: 6px; }
 .intro-more summary { cursor: pointer; color: var(--primary); font-weight: 600; width: fit-content; }
@@ -359,7 +359,7 @@ button, input, select { font: inherit; color: inherit; }
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: 12px;
-  margin: 0 0 16px;
+  margin-bottom: 16px;
 }
 .stat {
   --sec: var(--primary);
