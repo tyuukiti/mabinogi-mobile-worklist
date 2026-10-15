@@ -410,7 +410,7 @@
         }
         var cls = "task" + (it.complete ? " done" : (it.n > 0 ? " partial" : ""));
         html += '<div class="' + cls + '" data-id="' + esc(t.id) + '" data-cat="' + catSlug(t.category) + '" role="button" tabindex="0" aria-pressed="' + (it.complete ? "true" : "false") + '">';
-        html += '<span class="task-check" aria-hidden="true">' + (it.complete ? "✓" : "") + "</span>";
+        html += '<span class="task-check" aria-hidden="true"></span>';
         html += '<div class="task-body"><div class="task-name">' + esc(t.name);
         if (t.place) html += '<span class="chip muted">' + esc(t.place) + "</span>";
         if (t.days && t.days.length) html += '<span class="chip muted">' + fmtDays(t.days) + "</span>";
@@ -439,6 +439,13 @@
     fill.classList.toggle("complete", total > 0 && doneN === total);
   }
 
+  // 完了になった直後のカードにだけ弾むアニメーションを付ける
+  function popTask(t, wasComplete) {
+    if (wasComplete || doneCount(t) < t.count) return;
+    var el = $(t.type + "-list").querySelector('.task[data-id="' + t.id.replace(/"/g, '\\"') + '"]');
+    if (el) el.classList.add("pop");
+  }
+
   function onListClick(e) {
     var row = e.target.closest(".task");
     if (!row) return;
@@ -446,6 +453,7 @@
     if (!t) return;
     var btn = e.target.closest("button[data-act]");
     var n = doneCount(t);
+    var wasComplete = n >= t.count;
     if (btn) {
       if (btn.disabled) return;
       var act = btn.getAttribute("data-act");
@@ -455,6 +463,7 @@
       setDone(t, n >= t.count ? 0 : t.count);
     }
     renderList(t.type);
+    popTask(t, wasComplete);
   }
 
   function onListKey(e) {
@@ -465,8 +474,10 @@
     var t = findTask(row.getAttribute("data-id"));
     if (!t) return;
     var n = doneCount(t);
+    var wasComplete = n >= t.count;
     setDone(t, n >= t.count ? 0 : t.count);
     renderList(t.type);
+    popTask(t, wasComplete);
     var again = $(t.type + "-list").querySelector('.task[data-id="' + t.id.replace(/"/g, '\\"') + '"]');
     if (again) again.focus();
   }

@@ -75,6 +75,17 @@ localStorage のキー `mabimoba_worklist_v1` に 1 つの JSON として保存�
 
 Catppuccin は MIT License です。
 
+## UI 部品の出典（Uiverse.io）
+
+ボタン・チェックボックス・トグルは [Uiverse.io](https://uiverse.io)（MIT License）の作品を基に、色を Catppuccin のトークンへ置き換えて使っています。
+
+| 部品 | 作者 / 作品 |
+|---|---|
+| 通常ボタン（円形に塗りつぶされるホバー） | eduardo-amaro-maciel / [slimy-stingray-64](https://uiverse.io/eduardo-amaro-maciel/slimy-stingray-64) |
+| プライマリボタン（浮き上がり + 影） | KlaujonRuamni / [evil-sheep-56](https://uiverse.io/KlaujonRuamni/evil-sheep-56) |
+| チェックボックス（弾むアニメーション） | cssbuttons-io / [short-shrimp-54](https://uiverse.io/cssbuttons-io/short-shrimp-54) |
+| トグルスイッチ | ozgeozkaraa01 / [evil-cheetah-7](https://uiverse.io/ozgeozkaraa01/evil-cheetah-7) |
+
 ## 既定タスクの出典
 
 - マビノギモバイル公式「日次/週次コンテンツのリセットタイミング」
