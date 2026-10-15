@@ -342,12 +342,9 @@ button, input, select { font: inherit; color: inherit; }
 .banner.warn { background: var(--panel); border-left: 4px solid var(--warn); color: var(--text); }
 
 /* ---------- buttons ----------
-   通常ボタン: Uiverse.io by eduardo-amaro-maciel (slimy-stingray-64) の円形フィルを Catppuccin 色で
+   通常ボタン: 控えめな色変化のみ
    プライマリ: Uiverse.io by KlaujonRuamni (evil-sheep-56) の浮き上がり + 影 */
 .btn {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
   appearance: none;
   border: 2px solid var(--border);
   background: var(--control);
@@ -358,29 +355,14 @@ button, input, select { font: inherit; color: inherit; }
   line-height: 1.3;
   font-weight: 600;
   white-space: nowrap;
-  transition: color 0.3s ease, border-color 0.3s ease, transform 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 }
-.btn::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  left: 50%;
-  top: 100%;
-  width: 220%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--primary);
-  transform: translate(-50%, 0);
-  transition: top 0.45s ease, transform 0.45s ease;
-}
-.btn:hover { color: var(--on-accent); border-color: var(--primary); }
-.btn:hover::before { top: 50%; transform: translate(-50%, -50%); }
+.btn:hover { background: var(--control-hover); border-color: var(--primary); }
 .btn:active { transform: scale(0.96); }
 .btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 .btn.small { padding: 4px 12px; font-size: 0.85rem; }
 .btn.icon { width: 34px; height: 34px; padding: 0; font-size: 1.2rem; line-height: 1; }
 .btn.danger { color: var(--danger); border-color: var(--danger); }
-.btn.danger::before { background: var(--danger); }
 .btn.danger:hover { border-color: var(--danger); }
 .btn.primary {
   background: var(--primary);
@@ -389,12 +371,10 @@ button, input, select { font: inherit; color: inherit; }
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
 }
-.btn.primary::before { display: none; }
 .btn.primary:hover { background: var(--ctp-sapphire); border-color: var(--ctp-sapphire); transform: translateY(-2px); }
 .btn.primary:active { transform: scale(0.95); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); }
 .btn[disabled] { opacity: 0.4; cursor: default; }
-.btn[disabled]::before { display: none; }
-.btn[disabled]:hover { color: var(--text); border-color: var(--border); transform: none; }
+.btn[disabled]:hover { background: var(--control); border-color: var(--border); transform: none; }
 .btn.danger[disabled]:hover { color: var(--danger); border-color: var(--danger); }
 .btn.file-btn { display: inline-block; }
 .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -697,19 +677,8 @@ fieldset.field { border: 0; padding: 0; margin: 0 0 12px; }
 .hint.mono { font-family: ui-monospace, Consolas, monospace; font-size: 0.75rem; white-space: pre-wrap; }
 
 /* ---------- customize ---------- */
-.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
-.tab {
-  appearance: none;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  background: none;
-  padding: 8px 14px;
-  cursor: pointer;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-.tab[data-tab="daily"].active { color: var(--daily); border-bottom-color: var(--daily); }
-.tab[data-tab="weekly"].active { color: var(--weekly); border-bottom-color: var(--weekly); }
+#dlg-customize[data-type="daily"] .dialog-head { border-top-color: var(--daily); }
+#dlg-customize[data-type="weekly"] .dialog-head { border-top-color: var(--weekly); }
 
 .customize-toolbar { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 4px; }
 .customize-toolbar input[type="search"] {

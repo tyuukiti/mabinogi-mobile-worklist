@@ -487,9 +487,14 @@
   // ------------------------------------------------------------
   var customizeTab = "daily";
 
+  // 列ごとの専用ダイアログとして開く（デイリーの「表示項目」ならデイリーの項目だけ）
   function openCustomize() {
+    var dlg = $("dlg-customize");
+    dlg.setAttribute("data-type", customizeTab);
+    $("customize-title").textContent = (customizeTab === "weekly" ? "ウィークリー" : "デイリー") + "の表示項目";
+    $("customize-search").value = "";
     renderCustomize();
-    $("dlg-customize").showModal();
+    dlg.showModal();
   }
 
   function matchesQuery(t, q) {
@@ -501,10 +506,6 @@
     var q = $("customize-search").value.trim().toLowerCase();
     var tasks = allTasks().filter(function (t) { return t.type === customizeTab; });
     var filtered = tasks.filter(function (t) { return matchesQuery(t, q); });
-    document.querySelectorAll("#dlg-customize .tab").forEach(function (b) {
-      b.classList.toggle("active", b.getAttribute("data-tab") === customizeTab);
-    });
-
     var html = "";
     if (filtered.length === 0) {
       html = '<div class="empty">該当する項目がありません</div>';
@@ -613,8 +614,7 @@
     form.reset();
     $("edit-title").textContent = t ? "項目を編集" : "項目を追加";
     form.elements.id.value = t ? t.id : "";
-    form.elements.type.value = t ? t.type : customizeTab;
-    form.elements.type.disabled = !!t; // 種別は後から変えない（進捗の紐付けが崩れるため）
+    form.elements.type.value = t ? t.type : customizeTab; // 種別は開いている列で決まる
     form.elements.name.value = t ? t.name : "";
     form.elements.category.value = t ? t.category : "";
     form.elements.count.value = t ? t.count : 1;
@@ -834,12 +834,6 @@
     $("btn-reset-weekly").addEventListener("click", function () { clearProgress("weekly"); });
 
     // カスタマイズ
-    document.querySelectorAll("#dlg-customize .tab").forEach(function (b) {
-      b.addEventListener("click", function () {
-        customizeTab = b.getAttribute("data-tab");
-        renderCustomize();
-      });
-    });
     $("customize-search").addEventListener("input", renderCustomize);
     $("customize-list").addEventListener("click", onCustomizeClick);
     $("customize-list").addEventListener("change", onCustomizeClick);

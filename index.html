@@ -78,14 +78,10 @@
   <!-- 表示項目のカスタマイズ -->
   <dialog id="dlg-customize" class="dialog wide">
     <form method="dialog" class="dialog-head">
-      <h2>表示項目のカスタマイズ</h2>
+      <h2 id="customize-title">表示項目</h2>
       <button type="submit" class="btn icon" aria-label="閉じる">×</button>
     </form>
     <div class="dialog-body">
-      <div class="tabs" role="tablist">
-        <button type="button" class="tab active" data-tab="daily" role="tab">デイリー</button>
-        <button type="button" class="tab" data-tab="weekly" role="tab">ウィークリー</button>
-      </div>
       <div class="customize-toolbar">
         <input type="search" id="customize-search" placeholder="名前・カテゴリで絞り込み" autocomplete="off">
         <button type="button" class="btn small" id="btn-show-all">すべて表示</button>
@@ -106,7 +102,7 @@
       </div>
       <div class="dialog-body">
         <input type="hidden" name="id">
-        <label class="field">
+        <label class="field" hidden>
           <span>種別</span>
           <select name="type">
             <option value="daily">デイリー</option>
