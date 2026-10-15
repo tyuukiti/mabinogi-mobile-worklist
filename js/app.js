@@ -200,12 +200,20 @@
   }
 
   var toastTimer = null;
-  function toast(msg) {
+  function toast(msg, action) {
     var el = $("toast");
     el.textContent = msg;
+    if (action) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "toast-action";
+      b.textContent = action.label;
+      b.addEventListener("click", function () { el.hidden = true; action.fn(); });
+      el.appendChild(b);
+    }
     el.hidden = false;
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { el.hidden = true; }, 2600);
+    toastTimer = setTimeout(function () { el.hidden = true; }, action ? 6000 : 2600);
   }
 
   // ------------------------------------------------------------
@@ -410,6 +418,7 @@
         }
         var cls = "task" + (it.complete ? " done" : (it.n > 0 ? " partial" : ""));
         html += '<div class="' + cls + '" data-id="' + esc(t.id) + '" data-cat="' + catSlug(t.category) + '" role="button" tabindex="0" aria-pressed="' + (it.complete ? "true" : "false") + '">';
+        html += '<button type="button" class="task-hide" data-act="hide" aria-label="「' + esc(t.name) + '」を表示項目から外す" title="表示項目から外す">×</button>';
         html += '<span class="task-check" aria-hidden="true"><svg class="checkbox-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path class="check-path" d="M4 12L10 18L20 6" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>';
         html += '<div class="task-body"><div class="task-name">' + esc(t.name);
         if (t.place) html += '<span class="chip muted">' + esc(t.place) + "</span>";
@@ -439,6 +448,21 @@
     fill.classList.toggle("complete", total > 0 && doneN === total);
   }
 
+  // カード右上の × : 表示項目から外す（トーストから元に戻せる）
+  function hideTask(t) {
+    state.visible[t.id] = false;
+    saveState();
+    render();
+    toast("「" + t.name + "」を表示項目から外しました", {
+      label: "元に戻す",
+      fn: function () {
+        state.visible[t.id] = true;
+        saveState();
+        render();
+      }
+    });
+  }
+
   // 完了になった直後のカードにだけ弾むアニメーションを付ける
   function popTask(t, wasComplete) {
     if (wasComplete || doneCount(t) < t.count) return;
@@ -454,6 +478,10 @@
     var btn = e.target.closest("button[data-act]");
     var n = doneCount(t);
     var wasComplete = n >= t.count;
+    if (btn && btn.getAttribute("data-act") === "hide") {
+      hideTask(t);
+      return;
+    }
     if (btn) {
       if (btn.disabled) return;
       var act = btn.getAttribute("data-act");

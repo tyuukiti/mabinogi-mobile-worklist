@@ -494,6 +494,7 @@ button, input, select { font: inherit; color: inherit; }
 }
 
 .task {
+  position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
   column-gap: 10px;
@@ -552,7 +553,30 @@ button, input, select { font: inherit; color: inherit; }
 @keyframes check-in { from { transform: scale(0); } to { transform: scale(1); } }
 @keyframes check-draw { from { stroke-dashoffset: 40; } to { stroke-dashoffset: 0; } }
 
-.task-body { min-width: 0; }
+.task-body { min-width: 0; padding-right: 18px; }
+
+/* カード右上の × : ホバー時に現れ、押すと表示項目から外れる */
+.task-hide {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--text-faint);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.task:hover .task-hide, .task-hide:focus-visible { opacity: 1; }
+.task-hide:hover { background: var(--control-hover); color: var(--text); }
+.task-hide:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+@media (hover: none) { .task-hide { opacity: 0.6; } }
 .task-name { font-weight: 600; line-height: 1.35; }
 .task-note { font-size: 0.76rem; color: var(--text-muted); margin-top: 3px; line-height: 1.4; }
 
@@ -761,6 +785,16 @@ fieldset.field { border: 0; padding: 0; margin: 0 0 12px; }
   box-shadow: var(--shadow);
   z-index: 50;
   max-width: calc(100vw - 32px);
+}
+.toast-action {
+  margin-left: 12px;
+  padding: 2px 10px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: none;
+  color: inherit;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 @media (max-width: 520px) {
