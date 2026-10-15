@@ -589,7 +589,6 @@
 
   function renderCustomize() {
     var q = $("customize-search").value.trim().toLowerCase();
-    var dow = dailyPeriodDate(new Date()).getDay();
     var tasks = allTasks().filter(function (t) { return t.type === customizeTab; });
     var filtered = tasks.filter(function (t) { return matchesQuery(t, q); });
     var html = "";
@@ -613,10 +612,7 @@
       if (t.count > 1) html += '<span class="chip">' + t.count + " 回</span>";
       if (!t.builtin) html += '<span class="chip muted">独自</span>';
       else if (t.overridden) html += '<span class="chip muted">編集済</span>';
-      if (t.days && t.days.length) {
-        html += '<span class="chip muted">' + fmtDays(t.days) + "</span>";
-        if (t.type === "daily" && t.days.indexOf(dow) < 0) html += '<span class="chip muted">今日は対象外</span>';
-      }
+      if (t.days && t.days.length) html += '<span class="chip muted">' + fmtDays(t.days) + "</span>";
       html += "</div>";
       if (t.sub) html += '<div class="c-sub">' + fmtSub(t.sub) + "</div>";
       if (t.note) html += '<div class="c-note">' + esc(t.note) + "</div>";

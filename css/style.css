@@ -320,7 +320,7 @@ h3 { font-size: 0.9rem; margin: 18px 0 8px; color: var(--primary); }
 a { color: var(--primary); }
 button, input, select { font: inherit; color: inherit; }
 
-.app-header, .columns, .toolbar, .banner, .intro, .summary, .site-foot {
+.app-header, .columns, .toolbar, .banner, .intro, .summary {
   max-width: var(--max-w);
   margin-left: auto;
   margin-right: auto;
@@ -380,10 +380,6 @@ button, input, select { font: inherit; color: inherit; }
 .stat-fill { height: 100%; width: 0; background: var(--sec); border-radius: 999px; transition: width 0.25s; }
 .stat-foot { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 0.8rem; color: var(--text-muted); }
 .stat.complete .stat-foot span:first-child { color: var(--sec); font-weight: 700; }
-
-/* ---------- footer ---------- */
-.site-foot { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 22px; font-size: 0.8rem; color: var(--text-faint); }
-.site-foot a { color: var(--text-muted); }
 
 /* ---------- buttons ----------
    Uiverse.io by iZOXVL (wise-goat-75): 2px 枠のピル型。ホバーで枠と背景が少し明るくなり、中心から淡い光が広がる */
