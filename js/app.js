@@ -179,7 +179,7 @@
   // カテゴリ名 → 色スラッグ。未知のカテゴリは名前のハッシュで 6 色から固定で割り当てる
   var CAT_SLUGS = {
     "ログイン": "login", "ミッション": "mission", "ギルド": "guild", "ショップ": "shop", "戦闘": "battle",
-    "クエスト": "quest", "リソース": "resource", "生活": "life", "その他": "other"
+    "クエスト": "quest", "リソース": "resource", "生活": "life", "物々交換": "barter", "その他": "other"
   };
   var EXTRA_SLUGS = ["x1", "x2", "x3", "x4", "x5", "x6"];
   function catSlug(name) {
@@ -389,7 +389,7 @@
 
     var html = "";
     if (total === 0) {
-      html = '<div class="empty">表示する項目がありません。<br>右上の「表示項目」から選んでください。</div>';
+      html = '<div class="empty">表示する項目がありません。<br>見出し右の歯車ボタンから選んでください。</div>';
     } else {
       // 表示順はユーザーの並び順そのまま。カテゴリが切り替わる箇所に見出しを入れる
       var lastCat = null;
@@ -786,7 +786,12 @@
     $("daily-list").addEventListener("keydown", onListKey);
     $("weekly-list").addEventListener("keydown", onListKey);
 
-    $("btn-customize").addEventListener("click", openCustomize);
+    document.querySelectorAll("[data-customize]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        customizeTab = b.getAttribute("data-customize") === "weekly" ? "weekly" : "daily";
+        openCustomize();
+      });
+    });
     $("btn-settings").addEventListener("click", openSettings);
     $("opt-hide-completed").addEventListener("change", function (e) {
       state.settings.hideCompleted = e.target.checked;

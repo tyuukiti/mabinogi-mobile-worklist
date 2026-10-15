@@ -237,13 +237,14 @@
   --cat-quest: var(--ctp-blue);
   --cat-resource: var(--ctp-yellow);
   --cat-life: var(--ctp-green);
+  --cat-barter: var(--ctp-lavender);
   --cat-other: var(--ctp-overlay1);
   --cat-x1: var(--ctp-peach);
   --cat-x2: var(--ctp-sapphire);
   --cat-x3: var(--ctp-maroon);
-  --cat-x4: var(--ctp-lavender);
-  --cat-x5: var(--ctp-flamingo);
-  --cat-x6: var(--ctp-rosewater);
+  --cat-x4: var(--ctp-flamingo);
+  --cat-x5: var(--ctp-rosewater);
+  --cat-x6: var(--ctp-overlay2);
 
   --primary-soft: color-mix(in srgb, var(--primary) 16%, var(--card));
   --done-soft: color-mix(in srgb, var(--done) 16%, var(--card));
@@ -260,6 +261,7 @@
 [data-cat="quest"] { --cat: var(--cat-quest); }
 [data-cat="resource"] { --cat: var(--cat-resource); }
 [data-cat="life"] { --cat: var(--cat-life); }
+[data-cat="barter"] { --cat: var(--cat-barter); }
 [data-cat="other"] { --cat: var(--cat-other); }
 [data-cat="x1"] { --cat: var(--cat-x1); }
 [data-cat="x2"] { --cat: var(--cat-x2); }
@@ -399,6 +401,18 @@ button, input, select { font: inherit; color: inherit; }
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--sec) 25%, transparent);
 }
 .reset-info { margin: 4px 0 0; font-size: 0.8rem; color: var(--text-muted); }
+.column-head .gear {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  color: var(--sec);
+  background: color-mix(in srgb, var(--sec) 12%, var(--panel));
+  border-color: color-mix(in srgb, var(--sec) 35%, var(--border));
+}
+.column-head .gear:hover { background: color-mix(in srgb, var(--sec) 24%, var(--panel)); border-color: var(--sec); }
+.column-head .gear svg { display: block; }
+/* head-title-shrink: 見出しブロックは縮めて、歯車を同じ行の右端に置く */
+.column-head > div:first-child { flex: 1 1 0; min-width: 0; }
 .progress-wrap { min-width: 130px; text-align: right; }
 .progress-text { font-size: 0.9rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--sec); }
 .progress-bar {
@@ -685,7 +699,7 @@ fieldset.field { border: 0; padding: 0; margin: 0 0 12px; }
   .task-list { padding: 10px; gap: 6px; }
   /* 見出し行は折り返し、達成率は 2 行目に横並びで出す */
   .column-head { flex-wrap: wrap; padding: 12px 14px; }
-  .progress-wrap { flex: 1 1 100%; display: flex; align-items: center; gap: 10px; min-width: 0; text-align: left; }
+  .progress-wrap { flex: 1 1 100%; order: 3; display: flex; align-items: center; gap: 10px; min-width: 0; text-align: left; }
   .progress-bar { flex: 1 1 auto; margin-top: 0; }
   .c-actions .btn { padding: 3px 6px; }
   .toolbar .spacer { flex-basis: 100%; }
