@@ -10,7 +10,8 @@ css/style.css   スタイル（Catppuccin 4 フレーバー、ライト / ダー
 js/tasks.js     既定のタスク一覧（ここを編集すると全員の既定項目が変わる）
 js/app.js       アプリ本体（依存ライブラリなし）
 .nojekyll       Jekyll 変換を止める空ファイル（消さない）
-assets/         アイコン（icon.svg と PNG 各サイズ）、OGP 画像（og-image.png）とその生成元 og-image.html
+favicon.ico     ブラウザタブ用 favicon（ルート直下。16x16）
+assets/         favicon の PNG（16 / 32）、ホーム画面・PWA 用アイコン（icon.svg と 192 / 512 / apple-touch-icon）、OGP 画像（og-image.png）とその生成元 og-image.html
 robots.txt / sitemap.xml / manifest.webmanifest   検索エンジンとホーム画面追加用
 ```
 
