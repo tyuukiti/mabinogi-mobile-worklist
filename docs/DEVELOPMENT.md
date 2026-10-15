@@ -10,7 +10,20 @@ css/style.css   スタイル（Catppuccin 4 フレーバー、ライト / ダー
 js/tasks.js     既定のタスク一覧（ここを編集すると全員の既定項目が変わる）
 js/app.js       アプリ本体（依存ライブラリなし）
 .nojekyll       Jekyll 変換を止める空ファイル（消さない）
+favicon.ico     ブラウザタブ用 favicon（ルート直下。16x16）
+assets/         favicon の PNG（16 / 32）、ホーム画面・PWA 用アイコン（icon-192 / icon-512 / apple-touch-icon、いずれも黒い羊のドット絵）、OGP 画像（og-image.png = アプリ画面のスクリーンショット）
+robots.txt / sitemap.xml / manifest.webmanifest   検索エンジンとホーム画面追加用
 ```
+
+## アナリティクス（Google Analytics 4）
+
+`index.html` の head にある `window.GA_MEASUREMENT_ID = ""` に測定 ID（`G-XXXXXXXXXX`）を入れると gtag.js を読み込みます。空のとき、`file://` で開いたとき、`localhost` / `127.0.0.1` のときは何も読み込みません。
+
+## OGP 画像の作り直し
+
+`assets/og-image.png` はアプリ画面そのもののスクリーンショット（1200×630、Mocha、サンプル進捗入り）です。作り直すときは同じサイズのウィンドウでスクリーンショットを撮って差し替えます。
+
+アイコン（favicon 16 / 32、apple-touch-icon 180、icon 192 / 512）は黒い羊のドット絵を各サイズで書き出したものです。
 
 ## 既定タスク（`js/tasks.js`）
 
