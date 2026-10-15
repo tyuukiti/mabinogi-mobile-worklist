@@ -187,6 +187,8 @@
   function catSlug(name) {
     name = String(name || "");
     if (CAT_SLUGS[name]) return CAT_SLUGS[name];
+    if (name.indexOf("物々交換") === 0) return "barter"; // 「物々交換: 町名」も同じ色
+
     var h = 0;
     for (var i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
     return EXTRA_SLUGS[h % EXTRA_SLUGS.length];
