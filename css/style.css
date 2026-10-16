@@ -41,19 +41,24 @@
   --ctp-mantle: #e6e9ef;
   --ctp-crust: #dce0e8;
   color-scheme: light;
-  --bg: var(--ctp-mantle);
-  --panel: var(--ctp-base);
-  --card: var(--ctp-base);
+  --bg: var(--ctp-base);
+  --panel: #ffffff;
+  --card: #ffffff;
   --card-border: var(--ctp-surface0);
-  --card-hover: var(--ctp-mantle);
-  --control: var(--ctp-base);
-  --control-hover: var(--ctp-crust);
+  --card-hover: var(--ctp-base);
+  --control: #ffffff;
+  --control-hover: var(--ctp-mantle);
   --border: var(--ctp-surface0);
   --track: var(--ctp-surface0);
   --check-border: var(--ctp-overlay0);
   --text: var(--ctp-text);
-  --text-muted: var(--ctp-subtext0);
+  --text-muted: var(--ctp-subtext1);
   --text-faint: var(--ctp-overlay1);
+  /* アクセント色を文字に使うときの混合率（残りは --text と混ぜる）。Latte はアクセントが淡く小さな文字で読みにくいので、暗い文字色に寄せてコントラストを確保する */
+  --accent-text-mix: 35%;
+  --accent-heading-mix: 80%;
+  /* 完了したカードの背景にカテゴリ色を混ぜる割合 */
+  --done-tint: 14%;
   --shadow: 0 1px 2px rgba(76, 79, 105, 0.05), 0 8px 24px rgba(76, 79, 105, 0.08);
   --backdrop: rgba(76, 79, 105, 0.35);
   --btn-glow: rgba(76, 79, 105, 0.14);
@@ -99,6 +104,9 @@
   --text: var(--ctp-text);
   --text-muted: var(--ctp-subtext0);
   --text-faint: var(--ctp-overlay1);
+  --accent-text-mix: 100%;
+  --accent-heading-mix: 100%;
+  --done-tint: 20%;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.3);
   --backdrop: rgba(0, 0, 0, 0.55);
   --btn-glow: rgba(255, 255, 255, 0.22);
@@ -144,6 +152,9 @@
   --text: var(--ctp-text);
   --text-muted: var(--ctp-subtext0);
   --text-faint: var(--ctp-overlay1);
+  --accent-text-mix: 100%;
+  --accent-heading-mix: 100%;
+  --done-tint: 20%;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.3);
   --backdrop: rgba(0, 0, 0, 0.55);
   --btn-glow: rgba(255, 255, 255, 0.22);
@@ -189,6 +200,9 @@
   --text: var(--ctp-text);
   --text-muted: var(--ctp-subtext0);
   --text-faint: var(--ctp-overlay1);
+  --accent-text-mix: 100%;
+  --accent-heading-mix: 100%;
+  --done-tint: 20%;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.3);
   --backdrop: rgba(0, 0, 0, 0.55);
   --btn-glow: rgba(255, 255, 255, 0.22);
@@ -235,6 +249,9 @@
     --text: var(--ctp-text);
     --text-muted: var(--ctp-subtext0);
     --text-faint: var(--ctp-overlay1);
+    --accent-text-mix: 100%;
+    --accent-heading-mix: 100%;
+    --done-tint: 20%;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.3);
     --backdrop: rgba(0, 0, 0, 0.55);
   --btn-glow: rgba(255, 255, 255, 0.22);
@@ -244,6 +261,7 @@
 /* ---- アクセント（全フレーバー共通の役割割り当て） ---- */
 :root {
   --primary: var(--ctp-blue);
+  --link: color-mix(in srgb, var(--primary) var(--accent-heading-mix), var(--text)); /* リンク・見出しなど文字に使う primary */
   --on-accent: var(--ctp-base);
   --daily: var(--ctp-peach);
   --weekly: var(--ctp-mauve);
@@ -315,9 +333,9 @@ h1::before {
   flex: 0 0 auto;
 }
 h2 { font-size: 1.1rem; }
-h3 { font-size: 0.9rem; margin: 18px 0 8px; color: var(--primary); }
+h3 { font-size: 0.9rem; margin: 18px 0 8px; color: var(--link); }
 
-a { color: var(--primary); }
+a { color: var(--link); }
 button, input, select { font: inherit; color: inherit; }
 
 .app-header, .columns, .toolbar, .banner, .intro {
@@ -350,7 +368,7 @@ button, input, select { font: inherit; color: inherit; }
 .intro { margin-bottom: 14px; font-size: 0.92rem; color: var(--text-muted); }
 .intro-lead { margin: 0; }
 .intro-more { margin-top: 6px; }
-.intro-more summary { cursor: pointer; color: var(--primary); font-weight: 600; width: fit-content; }
+.intro-more summary { cursor: pointer; color: var(--link); font-weight: 600; width: fit-content; }
 .intro-more ul { margin: 8px 0 0; padding-left: 20px; }
 .intro-more li { margin: 2px 0; }
 
@@ -439,7 +457,7 @@ button, input, select { font: inherit; color: inherit; }
   border-bottom: 1px solid var(--card-border);
 }
 .column-head > div:first-child { flex: 1 1 0; min-width: 0; }
-.column-head h2 { color: var(--sec); display: flex; align-items: center; gap: 8px; }
+.column-head h2 { font-size: 1.2rem; color: color-mix(in srgb, var(--sec) var(--accent-heading-mix), var(--text)); display: flex; align-items: center; gap: 8px; }
 .column-head h2::before {
   content: "";
   width: 10px;
@@ -450,7 +468,7 @@ button, input, select { font: inherit; color: inherit; }
 }
 .reset-info { margin: 4px 0 0; font-size: 0.8rem; color: var(--text-muted); }
 .progress-wrap { min-width: 130px; text-align: right; }
-.progress-text { font-size: 0.9rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--sec); }
+.progress-text { font-size: 0.9rem; font-weight: 700; font-variant-numeric: tabular-nums; color: color-mix(in srgb, var(--sec) var(--accent-text-mix), var(--text)); }
 .progress-bar {
   height: 8px;
   margin-top: 6px;
@@ -483,7 +501,7 @@ button, input, select { font: inherit; color: inherit; }
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  color: var(--cat);
+  color: color-mix(in srgb, var(--cat) var(--accent-text-mix), var(--text));
 }
 .group-title:first-child { margin-top: 0; }
 .cat-dot {
@@ -521,8 +539,8 @@ button, input, select { font: inherit; color: inherit; }
 .task:active { transform: scale(0.995); }
 .task:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 /* 完了: 色は足さず、カード全体を薄くして取り消し線 */
-.task.done { opacity: 0.55; }
-.task.done:hover { opacity: 0.8; }
+.task.done { background: color-mix(in srgb, var(--cat) var(--done-tint), var(--card)); }
+.task.done:hover { background: color-mix(in srgb, var(--cat) calc(var(--done-tint) + 6%), var(--card)); }
 .task.done .task-name { text-decoration: line-through; color: var(--text-muted); }
 
 /* チェックボックス: Uiverse.io by kyle1dev (afraid-wasp-94) を Catppuccin 色で。チェック時に線が描かれて弾む */
@@ -601,7 +619,7 @@ button, input, select { font: inherit; color: inherit; }
   font-size: 0.9rem;
 }
 .task-counter .btn { padding: 0 9px; }
-.task-counter .num { min-width: 50px; text-align: center; font-weight: 700; color: var(--cat); }
+.task-counter .num { min-width: 50px; text-align: center; font-weight: 700; color: var(--text); }
 
 .chip {
   display: inline-block;
@@ -775,7 +793,7 @@ fieldset.field { border: 0; padding: 0; margin: 0 0 12px; }
   margin: 10px 0 2px;
   font-size: 0.76rem;
   font-weight: 700;
-  color: var(--cat);
+  color: color-mix(in srgb, var(--cat) var(--accent-text-mix), var(--text));
   letter-spacing: 0.04em;
 }
 
