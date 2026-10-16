@@ -13,7 +13,14 @@ js/app.js       アプリ本体（依存ライブラリなし）
 favicon.ico     ブラウザタブ用 favicon（ルート直下。16x16）
 assets/         favicon の PNG（16 / 32）、ホーム画面・PWA 用アイコン（icon-192 / icon-512 / apple-touch-icon、いずれも黒い羊のドット絵）、OGP 画像（og-image.png = アプリ画面のスクリーンショット）
 robots.txt / sitemap.xml / manifest.webmanifest   検索エンジンとホーム画面追加用
+.github/workflows/deploy.yml   GitHub Pages へのデプロイ（main への push で実行。公開用の index.html の CSS / JS の URL にコミットハッシュを付ける）
 ```
+
+## デプロイ（GitHub Pages）
+
+公開は GitHub Actions（`.github/workflows/deploy.yml`）が行います。main に push されると、公開用の成果物の `index.html` だけ CSS / JS の読み込み URL にコミットハッシュ（`?v=xxxxxxxx`）を付けてからデプロイします。URL が変わるのでブラウザは古いキャッシュを使わず、通常の再読み込みで新しい見た目になります。リポジトリ内の `index.html` は書き換えません。
+
+GitHub Pages の配信元は Settings > Pages で「GitHub Actions」にしてあります。
 
 ## アナリティクス（Google Analytics 4）
 
