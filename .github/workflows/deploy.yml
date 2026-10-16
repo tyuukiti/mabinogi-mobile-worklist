@@ -1,0 +1,55 @@
+# GitHub Pages へのデプロイ。
+# main への push で、CSS / JS の読み込み URL にコミットハッシュを付けてから公開する。
+# URL が変わるのでブラウザは古いキャッシュを使わず、通常の再読み込みだけで新しい見た目になる。
+# リポジトリ内の index.html は書き換えない（公開用の成果物だけを加工する）。
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: CSS / JS の URL にコミットハッシュを付ける（ブラウザキャッシュ対策）
+        run: |
+          v="${GITHUB_SHA:0:8}"
+          sed -i -E \
+            -e "s#(href=\"css/style\.css)\"#\1?v=${v}\"#" \
+            -e "s#(src=\"js/(tasks|app)\.js)\"#\1?v=${v}\"#g" \
+            index.html
+          n=$(grep -c "?v=${v}" index.html)
+          if [ "$n" -ne 3 ]; then
+            echo "置換された行数が 3 ではありません: $n"
+            exit 1
+          fi
+          grep -n "?v=${v}" index.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
